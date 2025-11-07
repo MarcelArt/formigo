@@ -2,7 +2,7 @@
 package repositories
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/models"
+	"github.com/MarcelArt/formigo/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/morkid/paginate"
 	"gorm.io/gorm"

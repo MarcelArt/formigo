@@ -1,11 +1,11 @@
 package api_handlers
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/database"
-	"github.com/MarcelArt/multi-tenant-system/models"
-	"github.com/MarcelArt/multi-tenant-system/pkg/arrays"
-	"github.com/MarcelArt/multi-tenant-system/repositories"
-	"github.com/MarcelArt/multi-tenant-system/utils"
+	"github.com/MarcelArt/formigo/database"
+	"github.com/MarcelArt/formigo/models"
+	"github.com/MarcelArt/formigo/pkg/arrays"
+	"github.com/MarcelArt/formigo/repositories"
+	"github.com/MarcelArt/formigo/utils"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )

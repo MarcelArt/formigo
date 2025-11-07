@@ -26,7 +26,7 @@ A Go web application built with Fiber framework, generated using [polygo](https:
 
 2. **Initialize Go module:**
    ```bash
-   go mod init github.com/MarcelArt/multi-tenant-system
+   go mod init github.com/MarcelArt/formigo
    ```
 
 3. **Install dependencies:**
@@ -45,7 +45,7 @@ A Go web application built with Fiber framework, generated using [polygo](https:
 
 6. **Uncomment docs import in main.go:**
    - Open `main.go`
-   - Uncomment the line: `// _ "github.com/MarcelArt/multi-tenant-system/docs"`
+   - Uncomment the line: `// _ "github.com/MarcelArt/formigo/docs"`
 
 ## Running the Application
 

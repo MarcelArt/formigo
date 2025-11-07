@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/MarcelArt/multi-tenant-system/config"
+	"github.com/MarcelArt/formigo/config"
 	"github.com/golang-jwt/jwt/v5"
 )
 

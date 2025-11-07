@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/MarcelArt/multi-tenant-system/config"
-	"github.com/MarcelArt/multi-tenant-system/database"
-	"github.com/MarcelArt/multi-tenant-system/routes"
+	"github.com/MarcelArt/formigo/config"
+	"github.com/MarcelArt/formigo/database"
+	"github.com/MarcelArt/formigo/routes"
 	"github.com/gofiber/fiber/v2"
 )
 

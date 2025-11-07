@@ -4,8 +4,8 @@ package main
 import (
 	"os"
 
-	"github.com/MarcelArt/multi-tenant-system/cmd"
-	_ "github.com/MarcelArt/multi-tenant-system/docs"
+	"github.com/MarcelArt/formigo/cmd"
+	_ "github.com/MarcelArt/formigo/docs"
 )
 
 // @title Fiber Example API

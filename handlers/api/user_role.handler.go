@@ -1,9 +1,8 @@
-
 package api_handlers
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/models"
-	"github.com/MarcelArt/multi-tenant-system/repositories"
+	"github.com/MarcelArt/formigo/models"
+	"github.com/MarcelArt/formigo/repositories"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +15,7 @@ type UserRoleHandler struct {
 func NewUserRoleHandler(repo repositories.IUserRoleRepo) *UserRoleHandler {
 	return &UserRoleHandler{
 		BaseCrudHandler: BaseCrudHandler[models.UserRole, models.UserRoleDTO, models.UserRolePage]{
-			repo: repo,
+			repo:      repo,
 			validator: validator.New(validator.WithRequiredStructEnabled()),
 		},
 		repo: repo,

@@ -1,9 +1,8 @@
-
 package api_handlers
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/models"
-	"github.com/MarcelArt/multi-tenant-system/repositories"
+	"github.com/MarcelArt/formigo/models"
+	"github.com/MarcelArt/formigo/repositories"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +15,7 @@ type RolePermissionHandler struct {
 func NewRolePermissionHandler(repo repositories.IRolePermissionRepo) *RolePermissionHandler {
 	return &RolePermissionHandler{
 		BaseCrudHandler: BaseCrudHandler[models.RolePermission, models.RolePermissionDTO, models.RolePermissionPage]{
-			repo: repo,
+			repo:      repo,
 			validator: validator.New(validator.WithRequiredStructEnabled()),
 		},
 		repo: repo,

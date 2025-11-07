@@ -4,7 +4,7 @@ package models
 import (
 	"time"
 
-	"github.com/MarcelArt/multi-tenant-system/enums"
+	"github.com/MarcelArt/formigo/enums"
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 )

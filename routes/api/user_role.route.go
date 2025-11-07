@@ -1,11 +1,10 @@
-
 package api_routes
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/database"
-	api_handlers "github.com/MarcelArt/multi-tenant-system/handlers/api"
-	"github.com/MarcelArt/multi-tenant-system/middlewares"
-	"github.com/MarcelArt/multi-tenant-system/repositories"
+	"github.com/MarcelArt/formigo/database"
+	api_handlers "github.com/MarcelArt/formigo/handlers/api"
+	"github.com/MarcelArt/formigo/middlewares"
+	"github.com/MarcelArt/formigo/repositories"
 	"github.com/gofiber/fiber/v2"
 )
 

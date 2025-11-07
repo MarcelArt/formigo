@@ -5,11 +5,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/MarcelArt/multi-tenant-system/models"
-	"github.com/MarcelArt/multi-tenant-system/pkg/arrays"
-	"github.com/MarcelArt/multi-tenant-system/pkg/objects"
-	"github.com/MarcelArt/multi-tenant-system/repositories"
-	"github.com/MarcelArt/multi-tenant-system/utils"
+	"github.com/MarcelArt/formigo/models"
+	"github.com/MarcelArt/formigo/pkg/arrays"
+	"github.com/MarcelArt/formigo/pkg/objects"
+	"github.com/MarcelArt/formigo/repositories"
+	"github.com/MarcelArt/formigo/utils"
 	"github.com/gofiber/fiber/v2"
 )
 

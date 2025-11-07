@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/MarcelArt/multi-tenant-system/models"
+	"github.com/MarcelArt/formigo/models"
 	"gorm.io/gorm"
 )
 

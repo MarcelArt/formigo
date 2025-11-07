@@ -4,8 +4,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/MarcelArt/multi-tenant-system/config"
-	"github.com/MarcelArt/multi-tenant-system/database"
+	"github.com/MarcelArt/formigo/config"
+	"github.com/MarcelArt/formigo/database"
 )
 
 func Migrate(arg string) {
@@ -23,4 +23,3 @@ func Migrate(arg string) {
 		os.Exit(1)
 	}
 }
-

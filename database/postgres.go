@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/MarcelArt/multi-tenant-system/config"
-	"github.com/MarcelArt/multi-tenant-system/models"
+	"github.com/MarcelArt/formigo/config"
+	"github.com/MarcelArt/formigo/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
