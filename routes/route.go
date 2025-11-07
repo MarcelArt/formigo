@@ -63,4 +63,5 @@ func SetupRoutes(app *fiber.App) {
 	api_routes.SetupRoleRoutes(api, authMiddleware)
 	api_routes.SetupUserRoleRoutes(api, authMiddleware)
 	api_routes.SetupRolePermissionRoutes(api, authMiddleware)
+	api_routes.SetupFormTemplateRoutes(api, authMiddleware)
 }
