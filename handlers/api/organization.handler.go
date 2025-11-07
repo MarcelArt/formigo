@@ -2,6 +2,7 @@ package api_handlers
 
 import (
 	"github.com/MarcelArt/formigo/database"
+	"github.com/MarcelArt/formigo/enums"
 	"github.com/MarcelArt/formigo/models"
 	"github.com/MarcelArt/formigo/repositories"
 	"github.com/MarcelArt/formigo/utils"
@@ -73,11 +74,10 @@ func (h *OrganizationHandler) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.NewJSONResponse(err, ""))
 	}
 
-	permissions := []models.RolePermissionDTO{
-		{RoleID: roleID, Permission: "role#view"},
-		{RoleID: roleID, Permission: "role#manage"},
+	permission := models.RolePermissionDTO{
+		RoleID: roleID, Permission: enums.FullAccess,
 	}
-	if err := rpRepo.BulkCreate(permissions); err != nil {
+	if _, err := rpRepo.Create(permission); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.NewJSONResponse(err, "failed creating default permissions"))
 	}
 

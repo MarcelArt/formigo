@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/MarcelArt/formigo/enums"
 	"github.com/MarcelArt/formigo/models"
 	"github.com/MarcelArt/formigo/pkg/arrays"
 	"github.com/MarcelArt/formigo/pkg/objects"
@@ -53,9 +54,13 @@ func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 			return orgPerm.OrgID == uint(orgID)
 		})
 
+		if currentPerm == nil {
+			return c.Status(fiber.StatusUnauthorized).JSON(models.NewJSONResponse(nil, "token invalid please relogin"))
+		}
+
 		permissions := strings.Split(currentPerm.Permissions, ";")
 		permission := arrays.Find(permissions, func(p string) bool {
-			return p == permissionKey
+			return p == permissionKey || p == enums.FullAccess
 		})
 
 		if permission == nil {
