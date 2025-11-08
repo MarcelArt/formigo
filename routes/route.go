@@ -38,7 +38,14 @@ func SetupRoutes(app *fiber.App) {
 			URL:         "http://example.com/doc.json",
 			DeepLinking: false,
 		}))
+		// log.Println("Proxy react dev server")
+		// app.Get("/", proxy.Forward("http://localhost:3000"))
+	} else {
+		log.Println("Prod specific routing")
 	}
+
+	app.Static("/assets", "./web/dist/assets")
+	app.Static("/*", "./web/dist")
 
 	app.Get("/metrics", monitor.New())
 
