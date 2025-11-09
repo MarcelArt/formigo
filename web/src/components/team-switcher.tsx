@@ -9,11 +9,11 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import useOrganization from '@/hooks/useOrganization';
+import { useNavigate } from '@tanstack/react-router';
 
 export function TeamSwitcher({
 	teams,
@@ -28,6 +28,7 @@ export function TeamSwitcher({
 	const { isMobile } = useSidebar();
 	const [activeTeam, setActiveTeam] = React.useState(teams[0]);
 	const { organizationId, setOrganizationId } = useOrganization();
+	const navigate = useNavigate();
 
 	if (!organizationId) setOrganizationId(activeTeam.organizationId);
 
@@ -36,9 +37,9 @@ export function TeamSwitcher({
 	}
 
 	const onChangeTeam = (team: { shortName: string; longName: string; organizationId: number }) => {
-    setOrganizationId(team.organizationId);
-    setActiveTeam(team);
-  };
+		setOrganizationId(team.organizationId);
+		setActiveTeam(team);
+	};
 
 	return (
 		<SidebarMenu>
@@ -49,9 +50,9 @@ export function TeamSwitcher({
 							size="lg"
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
-							{/* <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
-              </div> */}
+							<div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+								<img src={`https://ui-avatars.com/api/?name=${activeTeam.shortName}`} className="" />
+							</div>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								<span className="truncate font-medium">{activeTeam.shortName}</span>
 								<span className="truncate text-xs">{activeTeam.longName}</span>
@@ -65,22 +66,22 @@ export function TeamSwitcher({
 						side={isMobile ? 'bottom' : 'right'}
 						sideOffset={4}
 					>
-						<DropdownMenuLabel className="text-muted-foreground text-xs">Teams</DropdownMenuLabel>
-						{teams.map((team, index) => (
+						<DropdownMenuLabel className="text-muted-foreground text-xs">Organizations</DropdownMenuLabel>
+						{teams.map((team) => (
 							<DropdownMenuItem key={team.shortName} onClick={() => onChangeTeam(team)} className="gap-2 p-2">
-								{/* <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
-                </div> */}
+								<div className="flex size-6 items-center justify-center rounded-md border">
+									<img src={`https://ui-avatars.com/api/?name=${team.shortName}`} className="size-3.5 shrink-0" />
+								</div>
 								{team.shortName}
-								<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+								{/* <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut> */}
 							</DropdownMenuItem>
 						))}
 						<DropdownMenuSeparator />
-						<DropdownMenuItem className="gap-2 p-2">
+						<DropdownMenuItem className="gap-2 p-2" onClick={() => navigate({ to: '/organization/create' })}>
 							<div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
 								<Plus className="size-4" />
 							</div>
-							<div className="text-muted-foreground font-medium">Add team</div>
+							<div className="text-muted-foreground font-medium">New organization</div>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
