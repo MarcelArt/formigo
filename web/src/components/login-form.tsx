@@ -18,13 +18,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
 	const { mutate } = useMutation({
 		mutationFn: (value: LoginInput) => userApi.login(value),
 		onSuccess: (data) => {
-			setAccessToken(data.items.accessToken);
+			setUser(data.items.accessToken, data.items.username, data.items.email, data.items.userId);
 			navigate({ to: '/' });
 		},
 		onError: (e) => console.log('e.stack :>> ', e.stack),
 	});
 
-	const { setAccessToken, accessToken } = useAuth();
+	const { setUser, accessToken } = useAuth();
 
 	const form = useForm({
 		defaultValues: {

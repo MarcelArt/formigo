@@ -6,7 +6,13 @@ import (
 )
 
 const userOrganizationPageQuery = `
-	select * from user_organizations uo
+	select
+		uo.id id,
+		uo.user_id user_id,
+		uo.organization_id organization_id,
+		o.short_name organization
+	from user_organizations uo
+	left join organizations o on uo.organization_id = o.id and o.deleted_at isnull
 	where uo.deleted_at is null
 `
 

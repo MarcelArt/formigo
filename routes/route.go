@@ -44,9 +44,6 @@ func SetupRoutes(app *fiber.App) {
 		log.Println("Prod specific routing")
 	}
 
-	app.Static("/assets", "./web/dist/assets")
-	app.Static("/*", "./web/dist")
-
 	app.Get("/metrics", monitor.New())
 
 	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()))
@@ -71,4 +68,7 @@ func SetupRoutes(app *fiber.App) {
 	api_routes.SetupUserRoleRoutes(api, authMiddleware)
 	api_routes.SetupRolePermissionRoutes(api, authMiddleware)
 	api_routes.SetupFormTemplateRoutes(api, authMiddleware)
+
+	app.Static("/assets", "./web/dist/assets")
+	app.Static("/*", "./web/dist")
 }

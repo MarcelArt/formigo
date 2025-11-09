@@ -20,8 +20,9 @@ type UserOrganizationDTO struct {
 }
 
 type UserOrganizationPage struct {
-	UserID         uint `gorm:"not null" json:"userId"`
-	OrganizationID uint `gorm:"not null" json:"organizationId"`
+	UserID         uint   `gorm:"not null" json:"userId"`
+	OrganizationID uint   `gorm:"not null" json:"organizationId"`
+	Organization   string `json:"organization"`
 }
 
 func (UserOrganizationDTO) TableName() string {
