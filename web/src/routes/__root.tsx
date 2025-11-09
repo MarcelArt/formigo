@@ -16,10 +16,11 @@ import useAuth from '@/hooks/useAuth';
 
 export const Route = createRootRoute({
 	component: () => {
+		const refreshToken = localStorage.getItem('refreshToken');
 		const { accessToken } = useAuth();
 		const navigate = useNavigate();
 
-		if (!accessToken) {
+		if (!accessToken && !refreshToken) {
 			navigate({ to: '/login' });
 			return (
 				<>

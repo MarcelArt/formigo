@@ -18,6 +18,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
 	const { mutate } = useMutation({
 		mutationFn: (value: LoginInput) => userApi.login(value),
 		onSuccess: (data) => {
+			localStorage.setItem('refreshToken', data.items.refreshToken);
 			setUser(data.items.accessToken, data.items.username, data.items.email, data.items.userId);
 			navigate({ to: '/' });
 		},

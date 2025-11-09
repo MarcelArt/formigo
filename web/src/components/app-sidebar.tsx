@@ -15,7 +15,6 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -26,9 +25,12 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import useAuth from "@/hooks/useAuth"
+import { useQuery } from "@tanstack/react-query"
+import userOrganizationApi from "@/api/user-organization.api"
+import type { PaginationParams } from "@/types/paged"
 
 // This is sample data.
-const data = {
+const dummy = {
   // user: {
   //   name: "shadcn",
   //   email: "m@example.com",
@@ -158,14 +160,31 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { email, username } = useAuth();
+  const { email, username, userId } = useAuth();
+  console.log('userId :>> ', userId);
+
+  const { status, data } = useQuery({
+    queryFn: () => userOrganizationApi.read({
+      size: 300,
+      filters: ['user_id', userId!]
+    }),
+    queryKey: ['orgs-of-user', ['user_id', userId!]],
+  });
+  
+  if (status !== 'success') return null;
+
+  const organizations = data.items.map(org => ({ 
+    shortName: org.shortName, 
+    longName: org.longName,
+  }));
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={organizations} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={dummy.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
