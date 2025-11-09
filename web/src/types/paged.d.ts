@@ -28,10 +28,10 @@ export interface IFiltersBuilder {
     lte(key: string, value: string | number): this;
     and(): this;
     or(): this;
-    public in(key: string, range: Array<string | number>): this;
-    public nin(key: string, range: Array<string | number>): this;
-    public isNull(key: string): this;
-    public isNotNull(key: string): this;
+    in(key: string, range: Array<string | number>): this;
+    nin(key: string, range: Array<string | number>): this;
+    isNull(key: string): this;
+    isNotNull(key: string): this;
     subFilter(filters: Filters[]): this;
     between(cb: (sub: FiltersBuilder) => FiltersBuilder): this;
     build(): Filters[];
