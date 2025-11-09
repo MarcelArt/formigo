@@ -18,3 +18,104 @@ export interface Page<T> {
     visible: number;
     items: T[];
 }
+
+export interface IFiltersBuilder {
+    eq(key: string, value: string | number): this;
+    ne(key: string, value: string | number): this;
+    gt(key: string, value: string | number): this;
+    lt(key: string, value: string | number): this;
+    gte(key: string, value: string | number): this;
+    lte(key: string, value: string | number): this;
+    and(): this;
+    or(): this;
+    public in(key: string, range: Array<string | number>): this;
+    public nin(key: string, range: Array<string | number>): this;
+    public isNull(key: string): this;
+    public isNotNull(key: string): this;
+    subFilter(filters: Filters[]): this;
+    between(cb: (sub: FiltersBuilder) => FiltersBuilder): this;
+    build(): Filters[];
+}
+
+export class FiltersBuilder implements IFiltersBuilder{
+    private filters: Filters[];
+
+    constructor() {
+        this.filters = [];
+    }
+
+    public eq(key: string, value: string | number): this {
+        this.filters.push([key, '=', value]);
+        return this;
+    }
+
+    public ne(key: string, value: string | number): this {
+        this.filters.push([key, '<>', value]);
+        return this;
+    }
+
+    public gt(key: string, value: string | number): this {
+        this.filters.push([key, '>', value]);
+        return this;
+    }
+
+    public lt(key: string, value: string | number): this {
+        this.filters.push([key, '<', value]);
+        return this;
+    }
+
+    public gte(key: string, value: string | number): this {
+        this.filters.push([key, '>=', value]);
+        return this;
+    }
+
+    public lte(key: string, value: string | number): this {
+        this.filters.push([key, '<=', value]);
+        return this;
+    }
+
+    public between(key: string, min: string | number, max: string | number): this {
+        this.filters.push([key, 'between', [min, max]]);
+        return this;
+    }
+
+    public and(): this {
+        this.filters.push(['AND']);
+        return this;
+    }
+
+    public or(): this {
+        this.filters.push(['OR']);
+        return this;
+    }
+
+    public in(key: string, range: Array<string | number>): this {
+        this.filters.push([key, 'in', range]);
+        return this;
+    }
+
+    public nin(key: string, range: Array<string | number>): this {
+        this.filters.push([key, 'not in', range]);
+        return this;
+    }
+
+    public isNotNull(key: string): this {
+        this.filters.push([key, 'is not', 'null']);
+        return this;
+    }
+
+    public isNull(key: string): this {
+        this.filters.push([key, 'is', 'null']);
+        return this;
+    }
+
+    public subFilter(cb: (sub: FiltersBuilder) => FiltersBuilder): this {
+        const subBuilder = new FiltersBuilder();
+        this.filters.push(cb(subBuilder).build());
+        return this;
+    }
+
+    public build(): Filters[] {
+        return this.filters;
+    }
+}

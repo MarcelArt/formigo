@@ -27,7 +27,7 @@ import {
 import useAuth from "@/hooks/useAuth"
 import { useQuery } from "@tanstack/react-query"
 import userOrganizationApi from "@/api/user-organization.api"
-import type { PaginationParams } from "@/types/paged"
+import { FiltersBuilder } from "@/types/paged.d"
 
 // This is sample data.
 const dummy = {
@@ -161,14 +161,16 @@ const dummy = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { email, username, userId } = useAuth();
-  console.log('userId :>> ', userId);
+  
+  const filtersBuilder = new FiltersBuilder();
+  const filters = filtersBuilder.eq('user_id', userId!).build();
 
   const { status, data } = useQuery({
     queryFn: () => userOrganizationApi.read({
       size: 300,
-      filters: ['user_id', userId!]
+      filters: filters
     }),
-    queryKey: ['orgs-of-user', ['user_id', userId!]],
+    queryKey: ['orgs-of-user', filters],
   });
   
   if (status !== 'success') return null;
