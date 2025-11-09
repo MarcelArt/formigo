@@ -5,6 +5,7 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  Building2,
   Command,
   Frame,
   GalleryVerticalEnd,
@@ -12,6 +13,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  UserLock,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -55,86 +57,36 @@ const dummy = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Organization",
       url: "#",
-      icon: SquareTerminal,
+      icon: Building2,
       isActive: true,
       items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
         {
           title: "Settings",
           url: "#",
         },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
         {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
+          title: "Members",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "User Management",
       url: "#",
-      icon: BookOpen,
+      icon: UserLock,
       items: [
         {
-          title: "Introduction",
+          title: "User Role",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Roles",
           url: "#",
         },
         {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Access Logs",
           url: "#",
         },
       ],
@@ -188,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dummy.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
+        {/* <NavProjects projects={dummy.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={{ email: email ?? '', name: username ?? '', avatar: 'logo192.png' }} />
