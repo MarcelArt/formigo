@@ -178,6 +178,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const organizations = data.items.map(org => ({ 
     shortName: org.shortName, 
     longName: org.longName,
+    organizationId: org.organizationId,
   }));
 
   return (
