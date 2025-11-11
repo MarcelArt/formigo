@@ -135,7 +135,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={organizations} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={dummy.navMain} />
+        <NavMain title='Organization Management' items={dummy.navMain} />
         {/* <NavProjects projects={dummy.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
