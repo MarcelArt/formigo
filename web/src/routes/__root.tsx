@@ -13,6 +13,7 @@ import {
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import useAuth from '@/hooks/useAuth';
+import { Toaster } from '@/components/ui/sonner';
 
 export const Route = createRootRoute({
 	component: () => {
@@ -61,6 +62,7 @@ export const Route = createRootRoute({
 					</header>
 					<Outlet />
 				</SidebarInset>
+        <Toaster />
 				<TanStackDevtools
 					config={{
 						position: 'bottom-right',

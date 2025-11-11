@@ -7,3 +7,9 @@ export function httpError(e: Error): Error {
     axiosError = e as AxiosError<JsonResponse<LoginResponse>, any>;
     return new Error(axiosError.response?.data.message);
 }
+
+export function unwrapAxiosError(e: Error): string {
+    let axiosError: AxiosError<JsonResponse<null>, any>;
+    axiosError = e as AxiosError<JsonResponse<null>, any>;
+    return axiosError.response?.data.message ?? '';
+}
