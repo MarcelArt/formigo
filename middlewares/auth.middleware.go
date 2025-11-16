@@ -40,6 +40,9 @@ func (m *AuthMiddleware) ProtectedAPI(c *fiber.Ctx) error {
 func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		orgIDStr := c.Params("org_id")
+		if orgIDStr == "" {
+			orgIDStr = c.Params("id")
+		}
 		orgID, err := strconv.Atoi(orgIDStr)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.NewJSONResponse(err, "invalid organization id"))
@@ -55,7 +58,7 @@ func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 		})
 
 		if currentPerm == nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(models.NewJSONResponse(nil, "token invalid please relogin"))
+			return c.Status(fiber.StatusForbidden).JSON(models.NewJSONResponse(nil, "token invalid please relogin"))
 		}
 
 		permissions := strings.Split(currentPerm.Permissions, ";")
