@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganizationSettingRouteImport } from './routes/organization.setting'
 import { Route as OrganizationCreateRouteImport } from './routes/organization.create'
 
 const SignupRoute = SignupRouteImport.update({
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganizationSettingRoute = OrganizationSettingRouteImport.update({
+  id: '/organization/setting',
+  path: '/organization/setting',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrganizationCreateRoute = OrganizationCreateRouteImport.update({
   id: '/organization/create',
   path: '/organization/create',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,30 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/organization/create'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/organization/create'
+    | '/organization/setting'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/organization/create'
-  id: '__root__' | '/' | '/login' | '/signup' | '/organization/create'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/organization/create'
+    | '/organization/setting'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/organization/create'
+    | '/organization/setting'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +92,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
   OrganizationCreateRoute: typeof OrganizationCreateRoute
+  OrganizationSettingRoute: typeof OrganizationSettingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organization/setting': {
+      id: '/organization/setting'
+      path: '/organization/setting'
+      fullPath: '/organization/setting'
+      preLoaderRoute: typeof OrganizationSettingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/organization/create': {
       id: '/organization/create'
       path: '/organization/create'
@@ -107,6 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
   OrganizationCreateRoute: OrganizationCreateRoute,
+  OrganizationSettingRoute: OrganizationSettingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

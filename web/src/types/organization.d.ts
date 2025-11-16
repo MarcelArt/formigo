@@ -6,3 +6,10 @@ export const OrganizationInputSchema = z.object({
     code: z.string(),
 });
 export type OrganizationInput = z.infer<typeof OrganizationInputSchema>;
+
+export interface Organization {
+    ID: number;
+    shortName: string;
+    longName: string;
+    code: string;
+}

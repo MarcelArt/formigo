@@ -60,7 +60,7 @@ const dummy = {
       items: [
         {
           title: "Settings",
-          url: "#",
+          url: "/organization/setting",
         },
         {
           title: "Members",

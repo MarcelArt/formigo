@@ -26,8 +26,11 @@ export function TeamSwitcher({
 	}[];
 }) {
 	const { isMobile } = useSidebar();
-	const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+	
 	const { organizationId, setOrganizationId } = useOrganization();
+	const team = organizationId ? teams.find(team => team.organizationId === organizationId) : teams[0];
+	
+	const [activeTeam, setActiveTeam] = React.useState(team ?? teams[0]);
 	const navigate = useNavigate();
 
 	if (!organizationId) setOrganizationId(activeTeam.organizationId);
