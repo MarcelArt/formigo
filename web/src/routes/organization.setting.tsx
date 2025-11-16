@@ -24,6 +24,11 @@ function RouteComponent() {
     queryFn: () => organizationApi.getById(organizationId),
   });
 
+  // const { setBreadcrumbs } = useBreadcrumb();
+	// setBreadcrumbs([
+	// 	{ title: 'Organization' },
+	// 	{ title: 'Setting' },
+	// ]);
   
   const { mutate } = useMutation({
     mutationFn: (input: OrganizationInput) => organizationApi.update(organizationId, input),

@@ -4,16 +4,10 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { Separator } from '@/components/ui/separator';
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 import useAuth from '@/hooks/useAuth';
 import { Toaster } from '@/components/ui/sonner';
+import { BreadcrumbComponent } from '@/components/breadcrumb-component';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 
 export const Route = createRootRoute({
 	component: () => {
@@ -59,6 +53,7 @@ export const Route = createRootRoute({
 								</BreadcrumbItem>
 							</BreadcrumbList>
 						</Breadcrumb>
+						{/* <BreadcrumbComponent/> */}
 					</header>
 					<Outlet />
 				</SidebarInset>
