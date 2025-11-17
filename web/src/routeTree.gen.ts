@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganizationSettingRouteImport } from './routes/organization.setting'
+import { Route as OrganizationMembersRouteImport } from './routes/organization.members'
 import { Route as OrganizationCreateRouteImport } from './routes/organization.create'
 
 const SignupRoute = SignupRouteImport.update({
@@ -35,6 +36,11 @@ const OrganizationSettingRoute = OrganizationSettingRouteImport.update({
   path: '/organization/setting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganizationMembersRoute = OrganizationMembersRouteImport.update({
+  id: '/organization/members',
+  path: '/organization/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrganizationCreateRoute = OrganizationCreateRouteImport.update({
   id: '/organization/create',
   path: '/organization/create',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRoutesById {
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/organization/create': typeof OrganizationCreateRoute
+  '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
 }
 export interface FileRouteTypes {
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/organization/create'
+    | '/organization/members'
     | '/organization/setting'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/organization/create'
+    | '/organization/members'
     | '/organization/setting'
   id:
     | '__root__'
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/organization/create'
+    | '/organization/members'
     | '/organization/setting'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +104,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
   OrganizationCreateRoute: typeof OrganizationCreateRoute
+  OrganizationMembersRoute: typeof OrganizationMembersRoute
   OrganizationSettingRoute: typeof OrganizationSettingRoute
 }
 
@@ -125,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationSettingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organization/members': {
+      id: '/organization/members'
+      path: '/organization/members'
+      fullPath: '/organization/members'
+      preLoaderRoute: typeof OrganizationMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/organization/create': {
       id: '/organization/create'
       path: '/organization/create'
@@ -140,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
   OrganizationCreateRoute: OrganizationCreateRoute,
+  OrganizationMembersRoute: OrganizationMembersRoute,
   OrganizationSettingRoute: OrganizationSettingRoute,
 }
 export const routeTree = rootRouteImport

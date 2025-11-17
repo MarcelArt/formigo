@@ -64,7 +64,7 @@ const dummy = {
         },
         {
           title: "Members",
-          url: "#",
+          url: "/organization/members",
         },
       ],
     },
