@@ -13,6 +13,12 @@ import { toast } from 'sonner';
 
 export const Route = createFileRoute('/organization/setting')({
   component: RouteComponent,
+  loader: () => ({
+		crumbs: [
+			{ title: 'Organization', link: '#' },
+			{ title: 'Setting', link: '#' },
+		],
+	}),
 })
 
 function RouteComponent() {

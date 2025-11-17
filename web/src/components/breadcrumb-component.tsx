@@ -1,8 +1,13 @@
-import useBreadcrumb from '@/hooks/useBreadcrumb';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './ui/breadcrumb';
+import { isMatch, useMatches } from '@tanstack/react-router';
 
 export function BreadcrumbComponent() {
-	const { breadcrumbs } = useBreadcrumb();
+	const matches = useMatches();
+
+	if (matches.some((match) => match.status === 'pending')) return null;
+
+	const matchesWithCrumbs = matches.filter((match) => isMatch(match, 'loaderData.crumbs'));
+	const breadcrumbs = matchesWithCrumbs[matchesWithCrumbs.length - 1].loaderData?.crumbs ?? [];
 
 	return (
 		<Breadcrumb>

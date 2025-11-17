@@ -12,31 +12,37 @@ import { toast } from 'sonner';
 
 export const Route = createFileRoute('/organization/create')({
 	component: RouteComponent,
+	loader: () => ({
+		crumbs: [
+			{ title: 'Organization', link: '#' },
+			{ title: 'Create', link: '#' },
+		],
+	}),
 });
 
 function RouteComponent() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate({ from: '/organization/create' });
-	
+
 	// const { setBreadcrumbs } = useBreadcrumb();
 	// setBreadcrumbs([
 	// 	{ title: 'Organization' },
 	// 	{ title: 'Create' },
 	// ]);
 
-  const { mutate } = useMutation({
-    mutationFn: (input: OrganizationInput) => organizationApi.create(input),
-    onSuccess: () => {
+	const { mutate } = useMutation({
+		mutationFn: (input: OrganizationInput) => organizationApi.create(input),
+		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['orgs-of-user'],
 			});
 			toast.success('Organization has been created');
 			navigate({ to: '/' });
 		},
-    onError: (e) => {
+		onError: (e) => {
 			toast.error(`Organization has not been created: ${unwrapAxiosError(e)}`);
 		},
-  });
+	});
 
 	const form = useForm({
 		validators: {
@@ -47,7 +53,7 @@ function RouteComponent() {
 			longName: '',
 			code: '',
 		},
-    onSubmit: ({ value }) => mutate(value),
+		onSubmit: ({ value }) => mutate(value),
 	});
 
 	return (
@@ -131,9 +137,9 @@ function RouteComponent() {
 								);
 							}}
 						/>
-						<div className='grid grid-cols-12'>
-              <div className="col-span-11"></div>
-							<Field className='col-span-1'>
+						<div className="grid grid-cols-12">
+							<div className="col-span-11"></div>
+							<Field className="col-span-1">
 								<Button type="submit">Save</Button>
 							</Field>
 						</div>
