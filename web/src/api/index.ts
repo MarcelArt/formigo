@@ -9,7 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
 	(config) => {
-    const { accessToken } = useAuth.getState();
+		const { accessToken } = useAuth.getState();
 		if (accessToken) {
 			config.headers.Authorization = `Bearer ${accessToken}`;
 		}
@@ -25,7 +25,7 @@ api.interceptors.response.use(
 		return response;
 	},
 	async (error) => {
-    const { setUser, logout } = useAuth.getState();
+		const { setUser, logout } = useAuth.getState();
 		const originalRequest = error.config;
 
 		if (error.response?.status === 401 && !originalRequest._retry) {
@@ -41,8 +41,7 @@ api.interceptors.response.use(
 
 					const { items } = response.data as JsonResponse<LoginResponse>;
 					localStorage.setItem('refreshToken', items.refreshToken);
-          console.log('items :>> ', items);
-          setUser(items.accessToken, items.username, items.email, items.userId);
+					setUser(items.accessToken, items.username, items.email, items.userId);
 
 					// Retry original request with new token
 					originalRequest.headers.Authorization = `Bearer ${items.accessToken}`;
@@ -50,7 +49,6 @@ api.interceptors.response.use(
 				}
 			} catch (refreshError) {
 				// Refresh failed, redirect to login
-        console.log(1);
 				logout();
 				localStorage.removeItem('refreshToken');
 				window.location.href = '/login';
@@ -60,8 +58,7 @@ api.interceptors.response.use(
 
 		// If no refresh token or refresh failed, redirect to login
 		if (error.response?.status === 401) {
-      console.log(2);
-      logout();
+			logout();
 			localStorage.removeItem('refreshToken');
 			window.location.href = '/login';
 		}
