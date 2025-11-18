@@ -1,13 +1,15 @@
 import userOrganizationApi from '@/api/user-organization.api';
 import { DataTable } from '@/components/data-table';
+import { InviteMemberDialog } from '@/components/invite-member-dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import useOrganization from '@/hooks/useOrganization';
 import { FiltersBuilder } from '@/types/paged.d';
 import type { UserOrganizationPage } from '@/types/user-organization';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
-import { BadgeCheckIcon } from 'lucide-react';
+import { BadgeCheckIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/organization/members')({
@@ -64,6 +66,16 @@ function RouteComponent() {
 
 	return (
 		<div className="container mx-auto py-10">
+			<div className="flex flex-row justify-between">
+				<h1 className="text-2xl pb-4">Members</h1>
+				<div className="flex flex-row gap-2">
+					<InviteMemberDialog/>
+					<Button variant="default">
+						<Plus />
+						Create user
+					</Button>
+				</div>
+			</div>
 			<DataTable
 				columns={columns}
 				data={data.items}

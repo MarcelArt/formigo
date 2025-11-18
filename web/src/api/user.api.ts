@@ -1,8 +1,9 @@
-import type { LoginInput, LoginResponse } from "@/types/user";
+import type { LoginInput, LoginResponse, UserPage } from "@/types/user";
 import api from ".";
 import type { JsonResponse } from "@/types/json-response";
 import { httpError } from "@/lib/api-error";
 import type { PermissionKey } from "@/types/permission-key";
+import type { Page, PaginationParams } from "@/types/paged";
 
 async function login(input: LoginInput): Promise<JsonResponse<LoginResponse>> {
     try {
@@ -26,8 +27,22 @@ async function getPermissionsByOrgId(orgId: number): Promise<JsonResponse<Permis
     }
 }
 
+async function read({ filters, page = 0, size = 10, sort }: PaginationParams): Promise<Page<UserPage>> {
+    const res = await api.get('/user', {
+        params: {
+            filters: JSON.stringify(filters),
+            page,
+            size,
+            sort,
+        }
+    });
+
+    return res.data;
+}
+
 const userApi = {
     login,
     getPermissionsByOrgId,
+    read,
 }
 export default userApi;

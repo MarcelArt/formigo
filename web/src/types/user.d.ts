@@ -1,5 +1,11 @@
 import z, { boolean } from 'zod';
 
+export interface UserPage {
+    ID: number;
+    username: string;
+    email: string;
+}
+
 export interface LoginResponse {
     accessToken: string;
     refreshToken: string;

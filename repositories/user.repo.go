@@ -8,6 +8,7 @@ import (
 
 const userPageQuery = `
 	select 
+		id,
 		username, 
 		email
 	from users

@@ -26,6 +26,7 @@ type UserDTO struct {
 }
 
 type UserPage struct {
+	ID       uint   `gorm:"primarykey" json:"ID"`
 	Username string `json:"username" gorm:"unique;not null"`
 	Email    string `json:"email" gorm:"unique;not null" validate:"email"`
 }

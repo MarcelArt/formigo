@@ -34,6 +34,7 @@ export interface IFiltersBuilder {
     isNotNull(key: string): this;
     subFilter(filters: Filters[]): this;
     between(cb: (sub: FiltersBuilder) => FiltersBuilder): this;
+    like(key: string, value: string): this;
     build(): Filters[];
 }
 
@@ -106,6 +107,11 @@ export class FiltersBuilder implements IFiltersBuilder{
 
     public isNull(key: string): this {
         this.filters.push([key, 'is', 'null']);
+        return this;
+    }
+
+    public like(key: string, value: string): this {
+        this.filters.push([key, 'LIKE', value]);
         return this;
     }
 
