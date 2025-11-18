@@ -1,3 +1,4 @@
+import { Fragment } from 'react/jsx-runtime';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './ui/breadcrumb';
 import { isMatch, useMatches } from '@tanstack/react-router';
 
@@ -15,21 +16,21 @@ export function BreadcrumbComponent() {
 				{breadcrumbs.map((breadcrumb, i) => {
 					if (i === 0 || i === breadcrumbs.length - 1) {
 						return (
-							<div key={i}>
+							<Fragment key={i}>
 								<BreadcrumbItem>
 									<BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
 								</BreadcrumbItem>
 								{i < breadcrumbs.length - 1 ? <BreadcrumbSeparator className="hidden md:block" /> : null}
-							</div>
+							</Fragment>
 						);
 					} else {
 						return (
-							<div key={i}>
+							<Fragment key={i}>
 								<BreadcrumbItem className="hidden md:block">
 									<BreadcrumbLink href={breadcrumb.link}>{breadcrumb.title}</BreadcrumbLink>
 								</BreadcrumbItem>
 								{i < breadcrumbs.length - 1 ? <BreadcrumbSeparator className="hidden md:block" /> : null}
-							</div>
+							</Fragment>
 						);
 					}
 				})}
