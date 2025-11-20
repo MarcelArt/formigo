@@ -23,6 +23,7 @@ const userOrganizationPageQuery = `
 
 type IUserOrganizationRepo interface {
 	IBaseCrudRepo[models.UserOrganization, models.UserOrganizationDTO, models.UserOrganizationPage]
+	BulkCreate(inputs []models.UserOrganizationDTO) ([]models.UserOrganizationDTO, error)
 }
 
 type UserOrganizationRepo struct {
@@ -36,4 +37,9 @@ func NewUserOrganizationRepo(db *gorm.DB) *UserOrganizationRepo {
 			pageQuery: userOrganizationPageQuery,
 		},
 	}
+}
+
+func (r *UserOrganizationRepo) BulkCreate(inputs []models.UserOrganizationDTO) ([]models.UserOrganizationDTO, error) {
+	err := r.db.Create(&inputs).Error
+	return inputs, err
 }

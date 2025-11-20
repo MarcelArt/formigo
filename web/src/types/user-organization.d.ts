@@ -1,3 +1,5 @@
+type UserOrganizationStatus = 'active' | 'pending';
+
 export interface UserOrganizationPage {
     ID: number;
     userId: number;
@@ -6,5 +8,16 @@ export interface UserOrganizationPage {
     organizationId: number;
     shortName: string;
     longName: string;
-    status: 'active' | 'pending';
+    status: UserOrganizationStatus;
+}
+
+export interface InviteUser {
+    userIds: number[];
+    organizationId: number;
+}
+
+export interface UserOrganizationDto {
+    userId: number;
+    organizationId: number;
+    status: UserOrganizationStatus;
 }

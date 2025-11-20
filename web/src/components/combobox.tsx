@@ -11,13 +11,14 @@ interface ComboboxProps extends React.ComponentProps<'div'> {
 	searchPlaceholder: string;
 	empty: string;
 	onSearch: (val: string) => void;
+	onValueChange: (vals: string[]) => void;
 	items: {
 		value: string;
 		label: string;
 	}[];
 }
 
-export function Combobox({ placeholder, items, className, searchPlaceholder, empty, onSearch }: ComboboxProps) {
+export function Combobox({ placeholder, items, className, searchPlaceholder, empty, onSearch, onValueChange }: ComboboxProps) {
 	const [open, setOpen] = React.useState(false);
 	const [values, setValues] = React.useState<typeof items>([]);
 
@@ -54,15 +55,15 @@ export function Combobox({ placeholder, items, className, searchPlaceholder, emp
 									value={item.value.toString()}
 									onSelect={(currentValue) => {
 										const i = values.findIndex((v) => v.value === currentValue);
-										console.log('i :>> ', i);
+										let newValues = values;
 										if (i > -1) {
-											const newValues = [...values.slice(0, i), ...values.slice(i + 1)];
-											setValues(newValues);
+											newValues = [...values.slice(0, i), ...values.slice(i + 1)];
 										} else {
 											const item = items.find((item) => item.value === currentValue);
-											const newValues = [...values, item!];
-											setValues(newValues);
+											newValues = [...values, item!];
 										}
+										setValues(newValues);
+										onValueChange(newValues.map(value => value.value));
 										setOpen(false);
 									}}
 								>

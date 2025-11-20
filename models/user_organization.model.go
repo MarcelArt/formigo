@@ -32,6 +32,11 @@ type UserOrganizationPage struct {
 	Status         string `gorm:"default:active" json:"status"`
 }
 
+type InviteUser struct {
+	UserIDs        []uint `json:"userIds"`
+	OrganizationID uint   `json:"organizationId"`
+}
+
 func (UserOrganizationDTO) TableName() string {
 	return userOrganizationTableName
 }

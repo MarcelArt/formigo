@@ -24,12 +24,6 @@ function RouteComponent() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate({ from: '/organization/create' });
 
-	// const { setBreadcrumbs } = useBreadcrumb();
-	// setBreadcrumbs([
-	// 	{ title: 'Organization' },
-	// 	{ title: 'Create' },
-	// ]);
-
 	const { mutate } = useMutation({
 		mutationFn: (input: OrganizationInput) => organizationApi.create(input),
 		onSuccess: () => {

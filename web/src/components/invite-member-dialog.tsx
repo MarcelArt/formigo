@@ -3,13 +3,23 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { Combobox } from './combobox';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FiltersBuilder } from '@/types/paged.d';
 import { useState } from 'react';
 import userApi from '@/api/user.api';
+import useOrganization from '@/hooks/useOrganization';
+import userOrganizationApi from '@/api/user-organization.api';
+import { toast } from 'sonner';
+import { unwrapAxiosError } from '@/lib/api-error';
 
 export function InviteMemberDialog() {
 	const [search, setSearch] = useState('');
+	const [userIds, setUserIds] = useState<string[]>([]);
+	const [isOpen, setIsOpen] = useState(false);
+
+	const { organizationId } = useOrganization();
+
+	const queryClient = useQueryClient();
 
 	const filters = search ? new FiltersBuilder().like('username', search).or().like('email', search).build() : [];
 
@@ -18,8 +28,21 @@ export function InviteMemberDialog() {
 		queryFn: () => userApi.read({ filters }),
 	});
 
+	const { mutate } = useMutation({
+		mutationFn: () => userOrganizationApi.inviteUsers({ userIds: userIds.map(userId => +userId), organizationId }),
+		onSuccess: () => {
+			toast.success(`Invitation sent to ${userIds.length} users`);
+			queryClient.invalidateQueries({
+				queryKey: ['orgs-members'],
+			});
+			setIsOpen(false);
+			setUserIds([]);
+		},
+		onError: (e) => toast.error(`Failed to invite: ${unwrapAxiosError(e)}`),
+	});
+
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button variant="outline">
 					<UserRoundPlus />
@@ -41,6 +64,7 @@ export function InviteMemberDialog() {
 							onSearch={setSearch}
 							placeholder="Username or Email"
 							items={status === 'success' ? data.items.map((item) => ({ value: item.ID.toString(), label: `${item.username} - ${item.email}` })) : []}
+							onValueChange={setUserIds}
 						/>
 					</div>
 				</div>
@@ -48,7 +72,7 @@ export function InviteMemberDialog() {
 					<DialogClose asChild>
 						<Button variant="outline">Cancel</Button>
 					</DialogClose>
-					<Button type="submit">Save changes</Button>
+					<Button onClick={() => mutate()} type="submit">Invite</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

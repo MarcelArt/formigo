@@ -39,10 +39,21 @@ func (m *AuthMiddleware) ProtectedAPI(c *fiber.Ctx) error {
 
 func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		// check from param org_id first
 		orgIDStr := c.Params("org_id")
+
+		// check from request body either have field organizationId or orgId
+		if orgIDStr == "" {
+			var orgIdBody models.OrganizationID
+			orgIdBody.FromBody(c)
+			orgIDStr = orgIdBody.ToString()
+		}
+
+		// check from param id if all failed
 		if orgIDStr == "" {
 			orgIDStr = c.Params("id")
 		}
+
 		orgID, err := strconv.Atoi(orgIDStr)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.NewJSONResponse(err, "invalid organization id"))
