@@ -1,4 +1,5 @@
 import userOrganizationApi from '@/api/user-organization.api';
+import { CreateUserDialog } from '@/components/create-user-dialog';
 import { DataTable } from '@/components/data-table';
 import { InviteMemberDialog } from '@/components/invite-member-dialog';
 import { Badge } from '@/components/ui/badge';
@@ -69,11 +70,8 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Members</h1>
 				<div className="flex flex-row gap-2">
-					<InviteMemberDialog/>
-					<Button variant="default">
-						<Plus />
-						Create user
-					</Button>
+					<InviteMemberDialog />
+					<CreateUserDialog />
 				</div>
 			</div>
 			<DataTable

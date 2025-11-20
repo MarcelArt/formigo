@@ -1,4 +1,4 @@
-import z, { boolean } from 'zod';
+import z, { boolean, email } from 'zod';
 
 export interface UserPage {
     ID: number;
@@ -21,3 +21,24 @@ export const LoginInputSchema = z.object({
 });
 // .refine(data => data.password === data.confirmPassword, 'Please ensure both password fields match');
 export type LoginInput = z.infer<typeof LoginInputSchema>;
+
+export const UserDtoSchema = z.object({
+    username: z.string().min(1, 'Username cannot be empty'),
+    email: z.email('Use a valid email format'),
+    password: z.string().min(1, 'Password cannot be empty'),
+    confirmPassword: z.string().min(1, 'Password cannot be empty'),
+}).superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Passwords do not match',
+            path: ['password'],
+        });
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Passwords do not match',
+            path: ['confirmPassword'],
+        });
+    }
+});
+export type UserDto = z.infer<typeof UserDtoSchema>;
