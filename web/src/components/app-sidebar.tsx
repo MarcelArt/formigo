@@ -74,11 +74,11 @@ const dummy = {
       icon: UserLock,
       items: [
         {
-          title: "User Role",
-          url: "#",
+          title: "Roles",
+          url: "/roles/",
         },
         {
-          title: "Roles",
+          title: "User's Role",
           url: "#",
         },
         {
