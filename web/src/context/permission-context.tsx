@@ -1,13 +1,13 @@
 import userApi from "@/api/user.api";
 import useAuth from "@/hooks/useAuth";
 import useOrganization from "@/hooks/useOrganization";
-import { FULL_ACCESS, type PermissionKey } from "@/types/permission-key";
+import { FULL_ACCESS, type PermissionKeys } from "@/types/permission";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, type FC, type JSX, type ReactNode } from "react";
 
 export interface PermissionContextProps {
-    permissions: PermissionKey[];
-    isAuthorized: (permissionKey: PermissionKey) => boolean;
+    permissions: PermissionKeys[];
+    isAuthorized: (permissionKey: PermissionKeys) => boolean;
 }
 
 const PermissionContext = createContext<PermissionContextProps>({
@@ -17,7 +17,7 @@ const PermissionContext = createContext<PermissionContextProps>({
 
 interface PermissionContextProviderProps {
     children: ReactNode;
-    permissionKey?: PermissionKey;
+    permissionKey?: PermissionKeys;
     deniedDisplay?: JSX.Element;
 }
 

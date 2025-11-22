@@ -5,6 +5,8 @@ export type PermissionKeys = 'fullAccess' |
     'organization#manage' |
     'userOrganization#invite';
 
+export const FULL_ACCESS: PermissionKeys = 'fullAccess';
+
 export const PERMISSION_MAP: Record<PermissionKeys, string> = {
     'fullAccess': 'Full Access',
     'role#view': 'View Roles',

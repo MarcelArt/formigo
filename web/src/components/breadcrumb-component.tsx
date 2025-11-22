@@ -1,6 +1,6 @@
 import { Fragment } from 'react/jsx-runtime';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './ui/breadcrumb';
-import { isMatch, useMatches } from '@tanstack/react-router';
+import { isMatch, Link, useMatches } from '@tanstack/react-router';
 
 export function BreadcrumbComponent() {
 	const matches = useMatches();
@@ -27,7 +27,7 @@ export function BreadcrumbComponent() {
 						return (
 							<Fragment key={i}>
 								<BreadcrumbItem className="hidden md:block">
-									<BreadcrumbLink href={breadcrumb.link}>{breadcrumb.title}</BreadcrumbLink>
+									<BreadcrumbLink><Link to={breadcrumb.link}>{breadcrumb.title}</Link></BreadcrumbLink>
 								</BreadcrumbItem>
 								{i < breadcrumbs.length - 1 ? <BreadcrumbSeparator className="hidden md:block" /> : null}
 							</Fragment>

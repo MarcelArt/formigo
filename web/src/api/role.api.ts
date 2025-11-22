@@ -1,6 +1,6 @@
 import type { Page, PaginationParams } from "@/types/paged";
 import api from ".";
-import type { Role, RoleDto, RolePage } from "@/types/role";
+import type { AssignPermissions, Role, RoleDto, RolePage } from "@/types/role";
 import type { JsonResponse } from "@/types/json-response";
 
 async function read(orgId: number | string, params: PaginationParams): Promise<Page<RolePage>> {
@@ -26,9 +26,15 @@ async  function getById(id: number, organizationId: number): Promise<JsonRespons
     return res.data;
 }
 
+async function assign(organizationId: number, input: AssignPermissions): Promise<JsonResponse<null>> {
+    const res = await api.patch(`/${organizationId}/role/permission`, input);
+    return res.data;
+}
+
 const roleApi = {
     read,
     update,
     getById,
+    assign,
 };
 export default roleApi;

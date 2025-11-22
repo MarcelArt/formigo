@@ -1,22 +1,50 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import rolePermissionApi from '@/api/role-permission.api';
+import roleApi from '@/api/role.api';
+import { PermissionMappingTab } from '@/components/permission-mapping-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UpdateRoleTab } from '@/components/update-role-tab';
+import useOrganization from '@/hooks/useOrganization';
+import { FiltersBuilder } from '@/types/paged.d';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/roles/update/$id')({
 	component: RouteComponent,
+	loader: async ({ params }) => {
+		const { id } = params;
+		const { organizationId } = useOrganization.getState();
+
+		const role = await roleApi.getById(+id, organizationId);
+		return {
+			crumbs: [
+				{ title: 'User Management', link: '#' },
+				{ title: 'Roles', link: '/roles' },
+				{ title: role.items.value, link: '#' },
+			],
+		};
+	},
 });
 
 function RouteComponent() {
-  const { id } = Route.useParams();
+	const { id } = Route.useParams();
+
+	const filters = new FiltersBuilder().eq('role_id', id).build();
+
+	const params = {
+		filters,
+		page: 0,
+		size: 300,
+	};
+
+	const { data, status } = useQuery({
+		queryKey: ['role-permissions', params],
+		queryFn: () => rolePermissionApi.read(params),
+	});
 
 	return (
 		// <div className="flex w-full max-w-sm flex-col gap-6 p-6">
 		<div className="flex min-h-svh flex-col items-center gap-6 p-6 md:p-10">
-			<Tabs className='w-full' defaultValue="details">
+			<Tabs className="w-full" defaultValue="details">
 				<TabsList>
 					<TabsTrigger value="details">Details</TabsTrigger>
 					<TabsTrigger value="permission">Permission Mapping</TabsTrigger>
@@ -25,25 +53,7 @@ function RouteComponent() {
 					<UpdateRoleTab roleId={+id} />
 				</TabsContent>
 				<TabsContent value="permission">
-					<Card>
-						<CardHeader>
-							<CardTitle>Password</CardTitle>
-							<CardDescription>Change your password here. After saving, you&apos;ll be logged out.</CardDescription>
-						</CardHeader>
-						<CardContent className="grid gap-6">
-							<div className="grid gap-3">
-								<Label htmlFor="tabs-demo-current">Current password</Label>
-								<Input id="tabs-demo-current" type="password" />
-							</div>
-							<div className="grid gap-3">
-								<Label htmlFor="tabs-demo-new">New password</Label>
-								<Input id="tabs-demo-new" type="password" />
-							</div>
-						</CardContent>
-						<CardFooter>
-							<Button>Save password</Button>
-						</CardFooter>
-					</Card>
+					<PermissionMappingTab roleId={+id} currentPermissions={status === 'success' ? data.items.map((item) => item.permission) : []} />
 				</TabsContent>
 			</Tabs>
 		</div>

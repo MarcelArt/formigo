@@ -1,4 +1,5 @@
 import z from "zod";
+import type { PermissionKeys } from "./permission";
 
 export interface Role {
     ID: number;
@@ -9,6 +10,11 @@ export interface RolePage {
     ID: number;
     value: string;
     permissions: string;
+}
+
+export interface AssignPermissions {
+    roleId: number;
+    permissions: PermissionKeys[];
 }
 
 export const RoleDtoSchema = z.object({
