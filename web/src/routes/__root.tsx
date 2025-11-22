@@ -19,6 +19,7 @@ export const Route = createRootRoute({
 			return (
 				<>
 					<Outlet />
+					<Toaster />
 					<TanStackDevtools
 						config={{
 							position: 'bottom-right',
@@ -41,11 +42,11 @@ export const Route = createRootRoute({
 					<header className="bg-background sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b px-4">
 						<SidebarTrigger className="-ml-1" />
 						<Separator orientation="vertical" className="mr-2 h-4" />
-						<BreadcrumbComponent/>
+						<BreadcrumbComponent />
 					</header>
 					<Outlet />
 				</SidebarInset>
-        <Toaster />
+				<Toaster />
 				<TanStackDevtools
 					config={{
 						position: 'bottom-right',

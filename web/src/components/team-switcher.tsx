@@ -33,11 +33,11 @@ export function TeamSwitcher({
 	const [activeTeam, setActiveTeam] = React.useState(team ?? teams[0]);
 	const navigate = useNavigate();
 
-	if (!organizationId) setOrganizationId(activeTeam.organizationId);
+	if (!organizationId && activeTeam?.organizationId) setOrganizationId(activeTeam.organizationId);
 
-	if (!activeTeam) {
-		return null;
-	}
+	// if (!activeTeam) {
+	// 	return null;
+	// }
 
 	const onChangeTeam = (team: { shortName: string; longName: string; organizationId: number }) => {
 		setOrganizationId(team.organizationId);
@@ -54,11 +54,11 @@ export function TeamSwitcher({
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-								<img src={`https://ui-avatars.com/api/?name=${activeTeam.shortName}`} className="" />
+								<img src={`https://ui-avatars.com/api/?name=${activeTeam?.shortName ?? '+'}`} className="" />
 							</div>
 							<div className="grid flex-1 text-left text-sm leading-tight">
-								<span className="truncate font-medium">{activeTeam.shortName}</span>
-								<span className="truncate text-xs">{activeTeam.longName}</span>
+								<span className="truncate font-medium">{activeTeam?.shortName ?? 'No organization'}</span>
+								<span className="truncate text-xs">{activeTeam?.longName ?? 'Start a new organization'}</span>
 							</div>
 							<ChevronsUpDown className="ml-auto" />
 						</SidebarMenuButton>
