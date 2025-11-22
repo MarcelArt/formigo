@@ -3,10 +3,45 @@ import { Button } from './ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Input } from './ui/input';
 import { useForm } from '@tanstack/react-form';
-import { UserDtoSchema } from '@/types/user.d';
+import { UserDtoSchema, type UserDto } from '@/types/user.d';
 import { Field, FieldError, FieldGroup, FieldLabel } from './ui/field';
+import userApi from '@/api/user.api';
+import useOrganization from '@/hooks/useOrganization';
+import type { UserOrganizationDto } from '@/types/user-organization';
+import userOrganizationApi from '@/api/user-organization.api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { unwrapAxiosError } from '@/lib/api-error';
 
 export function CreateUserDialog() {
+	const queryClient = useQueryClient();
+	const { organizationId } = useOrganization();
+	const [isOpen, setIsOpen] = useState(false);
+	
+	const createAndAddUserToOrg = async (input: UserDto) => {
+		const user =  await userApi.create(input);
+		const userOrganizationInput: UserOrganizationDto = {
+			organizationId,
+			status: 'active',
+			userId: user.items.ID,
+		};
+
+		await userOrganizationApi.create(userOrganizationInput);
+	}
+
+	const { mutate } = useMutation({
+		mutationFn: (input: UserDto) => createAndAddUserToOrg(input),
+		onSuccess: () => {
+			toast.success('User created and added to organization');
+			queryClient.invalidateQueries({
+				queryKey: ['orgs-members'],
+			});
+			setIsOpen(false);
+		},
+		onError: (e) => toast.error(`Failed to create user: ${unwrapAxiosError(e)}`),
+	})
+
 	const form = useForm({
 		defaultValues: {
 			username: '',
@@ -18,12 +53,12 @@ export function CreateUserDialog() {
 			onSubmit: UserDtoSchema,
 		},
 		onSubmit: async ({ value }) => {
-			console.log('value :>> ', value);
+			mutate(value);
 		},
 	});
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
 				<Button variant="default">
 					<Plus />

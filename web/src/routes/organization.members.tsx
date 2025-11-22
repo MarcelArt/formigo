@@ -3,14 +3,13 @@ import { CreateUserDialog } from '@/components/create-user-dialog';
 import { DataTable } from '@/components/data-table';
 import { InviteMemberDialog } from '@/components/invite-member-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import useOrganization from '@/hooks/useOrganization';
 import { FiltersBuilder } from '@/types/paged.d';
 import type { UserOrganizationPage } from '@/types/user-organization';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
-import { BadgeCheckIcon, Plus } from 'lucide-react';
+import { BadgeCheckIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/organization/members')({
