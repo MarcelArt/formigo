@@ -16,6 +16,7 @@ import { Route as RolesIndexRouteImport } from './routes/roles.index'
 import { Route as OrganizationSettingRouteImport } from './routes/organization.setting'
 import { Route as OrganizationMembersRouteImport } from './routes/organization.members'
 import { Route as OrganizationCreateRouteImport } from './routes/organization.create'
+import { Route as RolesUpdateIdRouteImport } from './routes/roles.update.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -52,6 +53,11 @@ const OrganizationCreateRoute = OrganizationCreateRouteImport.update({
   path: '/organization/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RolesUpdateIdRoute = RolesUpdateIdRouteImport.update({
+  id: '/roles/update/$id',
+  path: '/roles/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/roles': typeof RolesIndexRoute
+  '/roles/update/$id': typeof RolesUpdateIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/roles': typeof RolesIndexRoute
+  '/roles/update/$id': typeof RolesUpdateIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/roles/': typeof RolesIndexRoute
+  '/roles/update/$id': typeof RolesUpdateIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/roles'
+    | '/roles/update/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/roles'
+    | '/roles/update/$id'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/roles/'
+    | '/roles/update/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   OrganizationMembersRoute: typeof OrganizationMembersRoute
   OrganizationSettingRoute: typeof OrganizationSettingRoute
   RolesIndexRoute: typeof RolesIndexRoute
+  RolesUpdateIdRoute: typeof RolesUpdateIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/roles/update/$id': {
+      id: '/roles/update/$id'
+      path: '/roles/update/$id'
+      fullPath: '/roles/update/$id'
+      preLoaderRoute: typeof RolesUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrganizationMembersRoute: OrganizationMembersRoute,
   OrganizationSettingRoute: OrganizationSettingRoute,
   RolesIndexRoute: RolesIndexRoute,
+  RolesUpdateIdRoute: RolesUpdateIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

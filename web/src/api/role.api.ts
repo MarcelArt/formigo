@@ -1,6 +1,7 @@
 import type { Page, PaginationParams } from "@/types/paged";
 import api from ".";
-import type { RolePage } from "@/types/role";
+import type { Role, RoleDto, RolePage } from "@/types/role";
+import type { JsonResponse } from "@/types/json-response";
 
 async function read(orgId: number | string, params: PaginationParams): Promise<Page<RolePage>> {
     const res = await api.get(`${orgId}/role`, {
@@ -15,7 +16,19 @@ async function read(orgId: number | string, params: PaginationParams): Promise<P
     return res.data;
 }
 
+async function update(id: number, input: RoleDto): Promise<JsonResponse<RoleDto>> {
+    const res = await api.put(`/${input.organizationId}/role/${id}`, input);
+    return res.data;
+}
+
+async  function getById(id: number, organizationId: number): Promise<JsonResponse<Role>> {
+    const res = await api.get(`/${organizationId}/role/${id}`);
+    return res.data;
+}
+
 const roleApi = {
     read,
+    update,
+    getById,
 };
 export default roleApi;

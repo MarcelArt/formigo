@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { FiltersBuilder } from '@/types/paged.d';
 import { PERMISSION_MAP, type PermissionKeys } from '@/types/permission.d';
 import type { RolePage } from '@/types/role.d';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Pencil } from 'lucide-react';
@@ -64,7 +64,7 @@ function RouteComponent() {
 					<>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Link to="/roles">
+								<Link to="/roles/update/$id" params={{ id: row.original.ID.toString() }}>
 									<Button variant="ghost" size="icon">
 										<Pencil />
 									</Button>
