@@ -39,6 +39,7 @@ export function NavUser({
   const { logout } = useAuth();
 
   const onLogout = () => {
+    localStorage.removeItem('refreshToken');
     logout();
     navigate({ to: '/login' });
   }
