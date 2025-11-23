@@ -19,6 +19,6 @@ export interface AssignPermissions {
 
 export const RoleDtoSchema = z.object({
     value: z.string().min(1, "Role name cannot be empty"),
-    organizationId: z.number(),
+    organizationId: z.int('ID needs to be a valid integers').gt(0, "Invalid organization ID"),
 });
 export type RoleDto = z.infer<typeof RoleDtoSchema>;

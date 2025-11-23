@@ -1,4 +1,5 @@
 import roleApi from '@/api/role.api';
+import { CreateRoleDialog } from '@/components/create-role-dialog';
 import { DataTable } from '@/components/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,8 @@ function RouteComponent() {
 			header: 'Permissions',
 			cell: ({ row }) => {
 				const permissions = row.getValue('permissions') as string;
-				const permissionsSplitted = permissions.split(';') as PermissionKeys[];
+				let permissionsSplitted = permissions.split(';') as PermissionKeys[];
+				permissionsSplitted = permissionsSplitted?.filter((p) => p.length > 0) ?? [];
 
 				return permissionsSplitted?.length ? (
 					permissionsSplitted.map((permission, i) =>
@@ -101,8 +103,7 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Roles</h1>
 				<div className="flex flex-row gap-2">
-					{/* <InviteMemberDialog />
-					<CreateUserDialog /> */}
+					<CreateRoleDialog	/>
 				</div>
 			</div>
 			<DataTable
