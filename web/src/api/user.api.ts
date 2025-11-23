@@ -1,4 +1,4 @@
-import type { LoginInput, LoginResponse, UserDto, UserPage } from "@/types/user";
+import type { LoginInput, LoginResponse, UserDto, UserPage, UserWithRoles } from "@/types/user";
 import api from ".";
 import type { Id, JsonResponse } from "@/types/json-response";
 import { httpError } from "@/lib/api-error";
@@ -46,10 +46,24 @@ async function create(input: UserDto): Promise<JsonResponse<Id>> {
     return res.data;
 }
 
+async function getByOrgIdWithRoles(orgId: number, params: PaginationParams): Promise<Page<UserWithRoles>> {
+    const res = await api.get(`/user/role/${orgId}`, {
+        params: {
+            filters: JSON.stringify(params.filters),
+            page: params.page,
+            size: params.size,
+            sort: params.sort,
+        }
+    });
+
+    return res.data;
+}
+
 const userApi = {
     login,
     getPermissionsByOrgId,
     read,
     create,
+    getByOrgIdWithRoles,
 }
 export default userApi;

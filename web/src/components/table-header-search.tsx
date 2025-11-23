@@ -25,7 +25,7 @@ export function TableHeaderSearch({ label, value, onChange, button }: TableHeade
 		<Popover>
 			<PopoverTrigger asChild className="flex flex-row gap-1 text-left shrink p-0! m-0 w-fit">
 				<Button variant='link' className='text-left shrink p-0 m-0 w-fit text-foreground'>
-					{button} <Search />
+					{button} {search && `= ${search}`} <Search />
 				</Button>
 				{/* <Button variant="ghost" className='text-left shrink-1'>Role</Button> */}
 			</PopoverTrigger>

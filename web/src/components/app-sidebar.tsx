@@ -78,8 +78,8 @@ const dummy = {
           url: "/roles/",
         },
         {
-          title: "User's Role",
-          url: "#",
+          title: "Users",
+          url: "/users/",
         },
         {
           title: "Access Logs",

@@ -31,6 +31,14 @@ type UserPage struct {
 	Email    string `json:"email" gorm:"unique;not null" validate:"email"`
 }
 
+type UserWithRoles struct {
+	ID             uint   `gorm:"primarykey" json:"ID"`
+	Username       string `json:"username" gorm:"unique;not null"`
+	Email          string `json:"email" gorm:"unique;not null" validate:"email"`
+	OrganizationID uint   `json:"organizationId"`
+	Roles          string `json:"roles"`
+}
+
 type LoginInput struct {
 	Username   string `json:"username" gorm:"unique;not null"`
 	Password   string `json:"password" gorm:"not null" validate:"min=8"`

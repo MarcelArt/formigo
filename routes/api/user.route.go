@@ -18,6 +18,7 @@ func SetupUserRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
 	g.Get("/", auth.ProtectedAPI, h.Read)
 	g.Get("/:id", auth.ProtectedAPI, h.GetByID)
 	g.Get("/permission/:org_id", auth.ProtectedAPI, h.GetOrgPermissions)
+	g.Get("/role/:org_id", auth.ProtectedAPI, auth.Authz("user#view"), h.GetByOrgIDWithRoles)
 
 	g.Post("/", h.Create)
 	g.Post("/login", h.Login)

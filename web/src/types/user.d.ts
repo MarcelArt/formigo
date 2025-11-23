@@ -6,6 +6,14 @@ export interface UserPage {
     email: string;
 }
 
+export interface UserWithRoles {
+    ID: number;
+    username: string;
+    email: string;
+    organizationId: number;
+    roles: string;
+}
+
 export interface LoginResponse {
     accessToken: string;
     refreshToken: string;

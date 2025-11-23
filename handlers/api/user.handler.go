@@ -291,3 +291,26 @@ func (h *UserHandler) GetOrgPermissions(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(models.NewJSONResponse(permissions, "Permissions retrieved successfully"))
 }
+
+// GetByOrgIDWithRoles retrieves all users in organization roles
+// @Summary Get all users in organization roles
+// @Description Get all users in organization roles
+// @Tags User
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param org_id path string true "Organization ID"
+// @Param page query int false "Page"
+// @Param size query int false "Size"
+// @Param sort query string false "Sort"
+// @Param filters query string false "Filter"
+// @Success 200 {array} string
+// @Failure 500 {object} string
+// @Router /user/role/{org_id} [get]
+func (h *UserHandler) GetByOrgIDWithRoles(c *fiber.Ctx) error {
+	orgID := c.Params("org_id")
+
+	page := h.repo.GetByOrgIDWithRoles(orgID, c)
+	return c.Status(fiber.StatusOK).JSON(page)
+
+}

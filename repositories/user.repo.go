@@ -3,6 +3,8 @@ package repositories
 
 import (
 	"github.com/MarcelArt/formigo/models"
+	"github.com/gofiber/fiber/v2"
+	"github.com/morkid/paginate"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +22,7 @@ type IUserRepo interface {
 	GetByUsernameOrEmail(username string) (models.UserDTO, error)
 	GetOrgPermissions(id any, orgID any) ([]string, error)
 	GetPermissions(id any) ([]models.OrganizationPermissionClaims, error)
+	GetByOrgIDWithRoles(orgID any, c *fiber.Ctx) paginate.Page
 }
 
 type UserRepo struct {
@@ -76,4 +79,33 @@ func (r *UserRepo) GetPermissions(id any) ([]models.OrganizationPermissionClaims
 
 	err := r.db.Raw(query, id).Scan(&orgPermissions).Error
 	return orgPermissions, err
+}
+
+func (r *UserRepo) GetByOrgIDWithRoles(orgID any, c *fiber.Ctx) paginate.Page {
+	pg := paginate.New()
+
+	query := `
+		select 
+			u.id id,
+			u.username username, 
+			u.email email,
+			r.organization_id organization_id,
+			string_agg(r.value, ';') roles
+		from users u
+		left join user_roles ur on u.id = ur.user_id and ur.deleted_at isnull
+		left join roles r on ur.role_id = r.id and r.deleted_at isnull
+		where u.deleted_at is null
+		and r.organization_id = ?
+		group by
+			u.id,
+			u.username,
+			u.email,
+			r.organization_id
+	`
+	stmt := r.db.Raw(query, orgID)
+
+	var dest []models.UserWithRoles
+	page := pg.With(stmt).Request(c.Request()).Response(&dest)
+
+	return page
 }
