@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import useAuth from '@/hooks/useAuth';
 import { Toaster } from '@/components/ui/sonner';
 import { BreadcrumbComponent } from '@/components/breadcrumb-component';
+import { PermissionProvider } from '@/context/permission-context';
 
 export const Route = createRootRoute({
 	component: () => {
@@ -44,7 +45,9 @@ export const Route = createRootRoute({
 						<Separator orientation="vertical" className="mr-2 h-4" />
 						<BreadcrumbComponent />
 					</header>
-					<Outlet />
+					<PermissionProvider>
+						<Outlet />
+					</PermissionProvider>
 				</SidebarInset>
 				<Toaster />
 				<TanStackDevtools

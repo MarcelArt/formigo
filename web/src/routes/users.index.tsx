@@ -5,13 +5,15 @@ import { TableHeaderSearch } from '@/components/table-header-search';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { UnauthorizedComponent } from '@/components/unauthorized-component';
+import { PermissionProvider, usePermission } from '@/context/permission-context';
 import useOrganization from '@/hooks/useOrganization';
 import { FiltersBuilder } from '@/types/paged.d';
 import type { UserWithRoles } from '@/types/user.d';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Pencil } from 'lucide-react';
+import { Pencil, ShieldBan } from 'lucide-react';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/users/')({
@@ -30,6 +32,7 @@ function RouteComponent() {
 	const [size, setSize] = useState(10);
 	const [usernameFilter, setUsernameFilter] = useState('');
 	const [emailFilter, setEmailFilter] = useState('');
+	const { isAuthorized } = usePermission();
 
 	const columns: ColumnDef<UserWithRoles>[] = [
 		{
@@ -49,7 +52,15 @@ function RouteComponent() {
 				rolesSplitted = rolesSplitted?.filter((p) => p.length > 0) ?? [];
 
 				return rolesSplitted?.length ? (
-					rolesSplitted.map((role, i) => (i < 9 ? <Badge className='mr-1' key={i}>{role}</Badge> : i === 9 ? <Badge key={i}>+{rolesSplitted.length - 9}</Badge> : null))
+					rolesSplitted.map((role, i) =>
+						i < 9 ? (
+							<Badge className="mr-1" key={i}>
+								{role}
+							</Badge>
+						) : i === 9 ? (
+							<Badge key={i}>+{rolesSplitted.length - 9}</Badge>
+						) : null,
+					)
 				) : (
 					<Badge>None</Badge>
 				);
@@ -60,7 +71,7 @@ function RouteComponent() {
 			id: 'actions',
 			cell: ({ row }) => {
 				return (
-					<>
+					<PermissionProvider permissionKey="user#manage" deniedDisplay={<ShieldBan/>}>
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Link to="/users/update/$id" params={{ id: row.original.ID.toString() }}>
@@ -73,7 +84,7 @@ function RouteComponent() {
 								<p>Edit</p>
 							</TooltipContent>
 						</Tooltip>
-					</>
+					</PermissionProvider>
 				);
 			},
 		},
@@ -91,6 +102,7 @@ function RouteComponent() {
 		queryFn: () => userApi.getByOrgIdWithRoles(organizationId, params),
 	});
 
+	if (!isAuthorized('user#view')) return <UnauthorizedComponent />;
 	if (status !== 'success') return null;
 
 	return (
@@ -98,7 +110,9 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Users</h1>
 				<div className="flex flex-row gap-2">
-					<CreateUserDialog />
+					<PermissionProvider permissionKey="user#manage">
+						<CreateUserDialog />
+					</PermissionProvider>
 				</div>
 			</div>
 			<DataTable

@@ -3,6 +3,8 @@ import { CreateUserDialog } from '@/components/create-user-dialog';
 import { DataTable } from '@/components/data-table';
 import { InviteMemberDialog } from '@/components/invite-member-dialog';
 import { Badge } from '@/components/ui/badge';
+import { UnauthorizedComponent } from '@/components/unauthorized-component';
+import { PermissionProvider, usePermission } from '@/context/permission-context';
 import useOrganization from '@/hooks/useOrganization';
 import { FiltersBuilder } from '@/types/paged.d';
 import type { UserOrganizationPage } from '@/types/user-organization';
@@ -26,6 +28,7 @@ function RouteComponent() {
 	const { organizationId } = useOrganization();
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
+	const { isAuthorized } = usePermission();
 
 	const filtersBuilder = new FiltersBuilder();
 	const filters = filtersBuilder.eq('organization_id', organizationId).build();
@@ -36,6 +39,7 @@ function RouteComponent() {
 		queryFn: () => userOrganizationApi.read(param),
 	});
 
+	if (!isAuthorized('user#view')) return <UnauthorizedComponent />;
 	if (status !== 'success') return null;
 
 	const columns: ColumnDef<UserOrganizationPage>[] = [
@@ -69,8 +73,12 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Members</h1>
 				<div className="flex flex-row gap-2">
-					<InviteMemberDialog />
-					<CreateUserDialog />
+					<PermissionProvider permissionKey="userOrganization#invite">
+						<InviteMemberDialog />
+					</PermissionProvider>
+					<PermissionProvider permissionKey="user#manage">
+						<CreateUserDialog />
+					</PermissionProvider>
 				</div>
 			</div>
 			<DataTable

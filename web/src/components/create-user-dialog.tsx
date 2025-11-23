@@ -37,6 +37,9 @@ export function CreateUserDialog() {
 			queryClient.invalidateQueries({
 				queryKey: ['orgs-members'],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ['users-with-roles', organizationId],
+			});
 			setIsOpen(false);
 		},
 		onError: (e) => toast.error(`Failed to create user: ${unwrapAxiosError(e)}`),

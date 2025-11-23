@@ -1,6 +1,8 @@
 import userApi from '@/api/user.api';
 import { RoleMappingTab } from '@/components/role-mapping-tab';
+import { UnauthorizedComponent } from '@/components/unauthorized-component';
 import { UpdatePasswordTab } from '@/components/update-password-tab';
+import { usePermission } from '@/context/permission-context';
 import useOrganization from '@/hooks/useOrganization';
 import { FiltersBuilder } from '@/types/paged.d';
 import { useQuery } from '@tanstack/react-query';
@@ -25,6 +27,7 @@ export const Route = createFileRoute('/users/update/$id')({
 function RouteComponent() {
 	const { id } = Route.useParams();
 	const { organizationId } = useOrganization();
+	const { isAuthorized } = usePermission();
 
 	const filtersBuilder = new FiltersBuilder().eq('id', id);
 	const filters = filtersBuilder.build();
@@ -35,6 +38,8 @@ function RouteComponent() {
 		queryKey: ['users-with-roles', organizationId, params],
 		queryFn: () => userApi.getByOrgIdWithRoles(organizationId, params),
 	});
+
+	if (!isAuthorized('user#manage')) return <UnauthorizedComponent />;
 
 	return (
 		<div className="container mx-auto py-10">

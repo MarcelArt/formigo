@@ -5,6 +5,8 @@ import { TableHeaderSearch } from '@/components/table-header-search';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { UnauthorizedComponent } from '@/components/unauthorized-component';
+import { PermissionProvider, usePermission } from '@/context/permission-context';
 import useOrganization from '@/hooks/useOrganization';
 import { cn } from '@/lib/utils';
 import { FiltersBuilder } from '@/types/paged.d';
@@ -13,7 +15,7 @@ import type { RolePage } from '@/types/role.d';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Pencil } from 'lucide-react';
+import { Pencil, ShieldBan } from 'lucide-react';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/roles/')({
@@ -31,6 +33,7 @@ function RouteComponent() {
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
 	const [roleFilter, setRoleFilter] = useState('');
+	const { isAuthorized } = usePermission();
 
 	const columns: ColumnDef<RolePage>[] = [
 		{
@@ -71,7 +74,7 @@ function RouteComponent() {
 			id: 'actions',
 			cell: ({ row }) => {
 				return (
-					<>
+					<PermissionProvider permissionKey="role#manage" deniedDisplay={<ShieldBan/>}>
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Link to="/roles/update/$id" params={{ id: row.original.ID.toString() }}>
@@ -84,7 +87,7 @@ function RouteComponent() {
 								<p>Edit</p>
 							</TooltipContent>
 						</Tooltip>
-					</>
+					</PermissionProvider>
 				);
 			},
 		},
@@ -103,6 +106,7 @@ function RouteComponent() {
 		queryFn: () => roleApi.read(organizationId, param),
 	});
 
+	if (!isAuthorized('role#view')) return <UnauthorizedComponent />;
 	if (status != 'success') return null;
 
 	return (
@@ -110,7 +114,9 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Roles</h1>
 				<div className="flex flex-row gap-2">
-					<CreateRoleDialog />
+					<PermissionProvider permissionKey="role#manage">
+						<CreateRoleDialog />
+					</PermissionProvider>
 				</div>
 			</div>
 			<DataTable
