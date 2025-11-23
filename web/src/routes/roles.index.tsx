@@ -1,6 +1,7 @@
 import roleApi from '@/api/role.api';
 import { CreateRoleDialog } from '@/components/create-role-dialog';
 import { DataTable } from '@/components/data-table';
+import { TableHeaderSearch } from '@/components/table-header-search';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -26,6 +27,11 @@ export const Route = createFileRoute('/roles/')({
 });
 
 function RouteComponent() {
+	const { organizationId } = useOrganization();
+	const [page, setPage] = useState(0);
+	const [size, setSize] = useState(10);
+	const [roleFilter, setRoleFilter] = useState('');
+
 	const columns: ColumnDef<RolePage>[] = [
 		{
 			accessorKey: 'ID',
@@ -33,7 +39,9 @@ function RouteComponent() {
 		},
 		{
 			accessorKey: 'value',
-			header: 'Role',
+			header: () => {
+				return <TableHeaderSearch button="Role" label="Search role" value={roleFilter} onChange={setRoleFilter} />;
+			},
 		},
 		{
 			accessorKey: 'permissions',
@@ -82,11 +90,10 @@ function RouteComponent() {
 		},
 	];
 
-	const { organizationId } = useOrganization();
-	const [page, setPage] = useState(0);
-	const [size, setSize] = useState(10);
-
 	const filtersBuilder = new FiltersBuilder();
+	if (roleFilter.length > 0) {
+		filtersBuilder.like('value', roleFilter);
+	}
 	const filters = filtersBuilder.build();
 
 	const param = { filters, page, size };
@@ -103,7 +110,7 @@ function RouteComponent() {
 			<div className="flex flex-row justify-between">
 				<h1 className="text-2xl pb-4">Roles</h1>
 				<div className="flex flex-row gap-2">
-					<CreateRoleDialog	/>
+					<CreateRoleDialog />
 				</div>
 			</div>
 			<DataTable
