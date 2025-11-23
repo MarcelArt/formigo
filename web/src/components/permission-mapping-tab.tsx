@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
-import type { PermissionKeys } from '@/types/permission.d';
+import { type PermissionKeys } from '@/types/permission.d';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import roleApi from '@/api/role.api';
 import useOrganization from '@/hooks/useOrganization';
@@ -61,10 +61,11 @@ export function PermissionMappingTab({ roleId, currentPermissions }: PermissionM
 					/>
 					<div className="grid gap-1.5 font-normal">
 						<p className="text-sm leading-none font-medium">Full access</p>
-						<p className="text-muted-foreground text-sm">Enabling this will allow users with this role to have read and write access any resources.</p>
+						<p className="text-muted-foreground text-sm">Enabling this will allow users with this role to have read and write access to any resources.</p>
 					</div>
 				</Label>
 				<Accordion type="multiple">
+					{/* role */}
 					<AccordionItem value="role">
 						<AccordionTrigger className="text-xl">Role</AccordionTrigger>
 						<AccordionContent className="grid grid-cols-3">
@@ -78,6 +79,27 @@ export function PermissionMappingTab({ roleId, currentPermissions }: PermissionM
 							</div>
 						</AccordionContent>
 					</AccordionItem>
+
+					{/* user */}
+					<AccordionItem value="user">
+						<AccordionTrigger className="text-xl">User</AccordionTrigger>
+						<AccordionContent className="grid grid-cols-3">
+							<div className="flex items-center gap-3">
+								<Checkbox id="user-view" onCheckedChange={(c) => togglePermission('user#view', c.valueOf() === true)} checked={permissions.includes('user#view')} />
+								<Label htmlFor="user-view">View</Label>
+							</div>
+							<div className="flex items-center gap-3">
+								<Checkbox id="user-manage" onCheckedChange={(c) => togglePermission('user#manage', c.valueOf() === true)} checked={permissions.includes('user#manage')} />
+								<Label htmlFor="user-manage">Manage</Label>
+							</div>
+							<div className="flex items-center gap-3">
+								<Checkbox id="user-invite" onCheckedChange={(c) => togglePermission('userOrganization#invite', c.valueOf() === true)} checked={permissions.includes('userOrganization#invite')} />
+								<Label htmlFor="user-invite">Invite</Label>
+							</div>
+						</AccordionContent>
+					</AccordionItem>
+
+					{/* organization */}
 					<AccordionItem value="organization">
 						<AccordionTrigger className="text-xl">Organization</AccordionTrigger>
 						<AccordionContent className="grid grid-cols-3">
