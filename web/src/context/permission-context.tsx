@@ -1,7 +1,7 @@
 import userApi from "@/api/user.api";
 import useAuth from "@/hooks/useAuth";
 import useOrganization from "@/hooks/useOrganization";
-import { FULL_ACCESS, type PermissionKeys } from "@/types/permission";
+import { FULL_ACCESS, type PermissionKeys } from "@/types/permission.d";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, type FC, type JSX, type ReactNode } from "react";
 
@@ -26,23 +26,25 @@ export const PermissionProvider: FC<PermissionContextProviderProps> = ({ childre
         permissions: [],
         isAuthorized: () => false,
     }
-    if (!permissionKey) {
-        value.isAuthorized = () => true;
-        return <PermissionContext.Provider value={value}>{children}</PermissionContext.Provider>
-    }
     
     const { userId } = useAuth();
     const { organizationId } = useOrganization();
-
+    
     const { data, status } = useQuery({
         queryKey: ['permission-of-user-in-org', userId, organizationId],
         queryFn: () => userApi.getPermissionsByOrgId(organizationId),
     });
-
+    
+    
     if (status !== 'success') return <PermissionContext.Provider value={value}></PermissionContext.Provider>
-
+    
+    
     value.permissions = data.items;
     value.isAuthorized = (key) => data.items.includes(key) || data.items.includes(FULL_ACCESS);
+    
+    if (!permissionKey) {
+        return <PermissionContext.Provider value={value}>{children}</PermissionContext.Provider>
+    }
 
     const isAuthorized = value.permissions.includes(permissionKey) || value.permissions.includes(FULL_ACCESS);
 
