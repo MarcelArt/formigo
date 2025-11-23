@@ -63,7 +63,7 @@ function RouteComponent() {
 					<>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Link to="/roles/update/$id" params={{ id: row.original.ID.toString() }}>
+								<Link to="/users/update/$id" params={{ id: row.original.ID.toString() }}>
 									<Button variant="ghost" size="icon">
 										<Pencil />
 									</Button>
