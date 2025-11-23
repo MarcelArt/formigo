@@ -90,7 +90,8 @@ func (r *UserRepo) GetByOrgIDWithRoles(orgID any, c *fiber.Ctx) paginate.Page {
 			u.username username, 
 			u.email email,
 			r.organization_id organization_id,
-			string_agg(r.value, ';') roles
+			string_agg(r.value, ';') roles,
+			string_agg(r.id::text, ';') role_ids
 		from users u
 		left join user_roles ur on u.id = ur.user_id and ur.deleted_at isnull
 		left join roles r on ur.role_id = r.id and r.deleted_at isnull

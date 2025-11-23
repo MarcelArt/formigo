@@ -97,8 +97,8 @@ export function UpdatePasswordTab({ userId }: UpdatePasswordTabProps) {
 					</div>
 				</CardContent>
 				<CardFooter className="grid grid-cols-11">
-					<div className="col-span-10"></div>
-					<Field className="col-span-1">
+					<div className="col-span-7"></div>
+					<Field className="col-span-4">
 						<Button type="submit">Change password</Button>
 					</Field>
 				</CardFooter>

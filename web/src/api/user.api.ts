@@ -1,4 +1,4 @@
-import type { LoginInput, LoginResponse, User, UserDto, UserPage, UserPassword, UserWithRoles } from "@/types/user";
+import type { AssignRoles, LoginInput, LoginResponse, User, UserDto, UserPage, UserPassword, UserWithRoles } from "@/types/user";
 import api from ".";
 import type { Id, JsonResponse } from "@/types/json-response";
 import { httpError } from "@/lib/api-error";
@@ -71,6 +71,11 @@ async function getById(id: number): Promise<JsonResponse<User>> {
     return res.data;
 }
 
+async function assign(organizationId: number, input: AssignRoles): Promise<JsonResponse<null>> {
+    const res = await api.patch(`/user/role/${organizationId}`, input);
+    return res.data;
+}
+
 const userApi = {
     login,
     getPermissionsByOrgId,
@@ -79,5 +84,6 @@ const userApi = {
     getByOrgIdWithRoles,
     update,
     getById,
+    assign,
 }
 export default userApi;

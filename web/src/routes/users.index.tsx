@@ -49,7 +49,7 @@ function RouteComponent() {
 				rolesSplitted = rolesSplitted?.filter((p) => p.length > 0) ?? [];
 
 				return rolesSplitted?.length ? (
-					rolesSplitted.map((role, i) => (i < 9 ? <Badge key={i}>{role}</Badge> : i === 9 ? <Badge key={i}>+{rolesSplitted.length - 9}</Badge> : null))
+					rolesSplitted.map((role, i) => (i < 9 ? <Badge className='mr-1' key={i}>{role}</Badge> : i === 9 ? <Badge key={i}>+{rolesSplitted.length - 9}</Badge> : null))
 				) : (
 					<Badge>None</Badge>
 				);

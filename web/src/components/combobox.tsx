@@ -12,15 +12,17 @@ interface ComboboxProps extends React.ComponentProps<'div'> {
 	empty: string;
 	onSearch: (val: string) => void;
 	onValueChange: (vals: string[]) => void;
+	initialValues?: string[];
+	maxDisplay?: number;
 	items: {
 		value: string;
 		label: string;
 	}[];
 }
 
-export function Combobox({ placeholder, items, className, searchPlaceholder, empty, onSearch, onValueChange }: ComboboxProps) {
+export function Combobox({ placeholder, items, className, searchPlaceholder, empty, onSearch, onValueChange, initialValues, maxDisplay = 2 }: ComboboxProps) {
 	const [open, setOpen] = React.useState(false);
-	const [values, setValues] = React.useState<typeof items>([]);
+	const [values, setValues] = React.useState<typeof items>(initialValues ? items.filter(item => initialValues.includes(item.value)) : []);
 
 	const debounceRef = React.useRef<any>(null);
 
@@ -37,7 +39,7 @@ export function Combobox({ placeholder, items, className, searchPlaceholder, emp
 				<Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
 					<div className='flex gap-1'>
 						{values.length
-							? values.map((v, i) => (i === 2 ? <Badge key={i} variant="secondary">+{values.length - 2}</Badge> : i < 2 ? <Badge key={i} variant="secondary">{v.label}</Badge> : null))
+							? values.map((v, i) => (i === maxDisplay ? <Badge key={i} variant="secondary">+{values.length - maxDisplay}</Badge> : i < maxDisplay ? <Badge key={i} variant="secondary">{v.label}</Badge> : null))
 							: placeholder}
 					</div>
 					<ChevronsUpDown className="opacity-50" />

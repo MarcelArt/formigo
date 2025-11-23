@@ -21,6 +21,7 @@ export interface UserWithRoles {
 	email: string;
 	organizationId: number;
 	roles: string;
+	roleIds: string;
 }
 
 export interface LoginResponse {
@@ -29,6 +30,11 @@ export interface LoginResponse {
 	userId: number;
 	email: string;
 	username: string;
+}
+
+export interface AssignRoles {
+	userId: number;
+	roleIds: number[];
 }
 
 export const LoginInputSchema = z.object({

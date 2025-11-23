@@ -12,6 +12,7 @@ import (
 func SetupUserRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
 	h := api_handlers.NewUserHandler(
 		repositories.NewUserRepo(database.GetDB()),
+		repositories.NewUserRoleRepo(database.GetDB()),
 	)
 
 	g := api.Group("/user")
@@ -25,5 +26,6 @@ func SetupUserRoutes(api fiber.Router, auth *middlewares.AuthMiddleware) {
 	g.Post("/refresh", h.Refresh)
 
 	g.Put("/:id", auth.ProtectedAPI, h.Update)
+	g.Patch("/role/:org_id", auth.ProtectedAPI, auth.Authz("user#manage"), h.AssignRoles)
 	g.Delete("/:id", auth.ProtectedAPI, h.Delete)
 }
