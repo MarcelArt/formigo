@@ -1,6 +1,5 @@
 import { Funnel, FunnelX } from 'lucide-react';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { useState } from 'react';
@@ -22,6 +21,7 @@ export function TableHeaderFilterDropdown({ label, value, onChange, button, opti
 	const [filter, setFilter] = useState(value);
 
 	const handleChange = (val: string) => {
+    // val === '*' ? '' : val;
 		setFilter(val);
 		onChange(val);
 	};
@@ -43,6 +43,7 @@ export function TableHeaderFilterDropdown({ label, value, onChange, button, opti
 						<SelectContent>
 							<SelectGroup>
 								<SelectLabel>{button}</SelectLabel>
+                {/* <SelectItem value='*'>All</SelectItem> */}
 								{options.map((option, i) => (
 									<SelectItem key={i} value={option.value}>
 										{option.label}

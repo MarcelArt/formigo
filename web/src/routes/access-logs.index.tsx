@@ -31,11 +31,13 @@ function RouteComponent() {
 	const [size, setSize] = useState(10);
 	const [usernameFilter, setUsernameFilter] = useState('');
 	const [permissionFilter, setPermissionFilter] = useState('');
+	const [statusFilter, setStatusFilter] = useState('');
 	const { isAuthorized } = usePermission();
 
 	const filterBuilder = new FiltersBuilder({ behaviour: 'and' });
 	if (usernameFilter) filterBuilder.like('username', usernameFilter);
 	if (permissionFilter) filterBuilder.like('permission', permissionFilter);
+	if (statusFilter) filterBuilder.like('is_authorized', statusFilter);
 
 	const params: PaginationParams = {
 		filters: filterBuilder.build(),
@@ -86,7 +88,16 @@ function RouteComponent() {
 					value,
 					label,
 				}));
-				return <TableHeaderFilterDropdown display={(value) => PERMISSION_MAP[value as PermissionKeys]} options={options} button="Action" label="Filter action" value={permissionFilter} onChange={setPermissionFilter} />;
+				return (
+					<TableHeaderFilterDropdown
+						display={(value) => PERMISSION_MAP[value as PermissionKeys]}
+						options={options}
+						button="Action"
+						label="Filter action"
+						value={permissionFilter}
+						onChange={setPermissionFilter}
+					/>
+				);
 			},
 			cell: ({ row }) => {
 				const { permission } = row.original;
@@ -95,7 +106,22 @@ function RouteComponent() {
 		},
 		{
 			accessorKey: 'isAuthorized',
-			header: 'Status',
+			header: () => {
+				const options = [
+					{ label: 'Authorized', value: 'true' },
+					{ label: 'Denied', value: 'false' },
+				];
+				return (
+					<TableHeaderFilterDropdown
+						display={(value) => (value === 'true' ? 'Authorized' : 'Denied')}
+						options={options}
+						button="Status"
+						label="Filter status"
+						value={statusFilter}
+						onChange={setStatusFilter}
+					/>
+				);
+			},
 			cell: ({ row }) => {
 				const { isAuthorized } = row.original;
 
