@@ -2,6 +2,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -15,12 +16,14 @@ import (
 )
 
 type AuthMiddleware struct {
-	uRepo repositories.IUserRepo
+	uRepo  repositories.IUserRepo
+	alRepo repositories.IAccessLogRepo
 }
 
-func NewAuthMiddleware(uRepo repositories.IUserRepo) *AuthMiddleware {
+func NewAuthMiddleware(uRepo repositories.IUserRepo, alRepo repositories.IAccessLogRepo) *AuthMiddleware {
 	return &AuthMiddleware{
-		uRepo: uRepo,
+		uRepo:  uRepo,
+		alRepo: alRepo,
 	}
 }
 
@@ -39,6 +42,8 @@ func (m *AuthMiddleware) ProtectedAPI(c *fiber.Ctx) error {
 
 func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		userID := utils.ClaimsNumberToUint(c.Locals("userId"))
+
 		// check from param org_id first
 		orgIDStr := c.Params("org_id")
 
@@ -59,8 +64,18 @@ func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).JSON(models.NewJSONResponse(err, "invalid organization id"))
 		}
 
+		accessLog := models.AccessLogDTO{
+			Permission:     permissionKey,
+			IsAuthorized:   false,
+			Message:        "Unknown failure",
+			UserID:         userID,
+			OrganizationID: uint(orgID),
+		}
+
 		var orgPerms []models.OrganizationPermissionClaims
 		if err := objects.Cast(c.Locals("orgPerms"), &orgPerms); err != nil {
+			accessLog.IsAuthorized = false
+			accessLog.Message = "Invalid permissions, token has broken orgPerms claims"
 			return c.Status(fiber.StatusForbidden).JSON(models.NewJSONResponse(err, "invalid permissions"))
 		}
 
@@ -69,6 +84,9 @@ func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 		})
 
 		if currentPerm == nil {
+			accessLog.IsAuthorized = false
+			accessLog.Message = "No permissions found for this organization in current user's token"
+			m.alRepo.Create(accessLog)
 			return c.Status(fiber.StatusForbidden).JSON(models.NewJSONResponse(nil, "token invalid please relogin"))
 		}
 
@@ -78,9 +96,15 @@ func (m *AuthMiddleware) Authz(permissionKey string) fiber.Handler {
 		})
 
 		if permission == nil {
+			accessLog.IsAuthorized = false
+			accessLog.Message = fmt.Sprintf("User's role does not contain `%s` permission", permissionKey)
+			m.alRepo.Create(accessLog)
 			return c.Status(fiber.StatusForbidden).JSON(models.NewJSONResponse(nil, "access denied"))
 		}
 
+		accessLog.IsAuthorized = true
+		accessLog.Message = "Authorized"
+		m.alRepo.Create(accessLog)
 		return c.Next()
 	}
 }

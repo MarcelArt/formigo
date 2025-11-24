@@ -44,7 +44,7 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Get("/metrics", monitor.New())
 
-	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()))
+	authMiddleware := middlewares.NewAuthMiddleware(repositories.NewUserRepo(database.GetDB()), repositories.NewAccessLogRepo(database.GetDB()))
 
 	api := app.Group("/api")
 	api.Use(logger.New(logger.Config{
