@@ -55,6 +55,11 @@ const dummy = {
 					url: '/organization/members',
           permissionKey: 'user#view' as PermissionKeys,
 				},
+				{
+					title: 'Access Logs',
+					url: '/access-logs',
+          permissionKey: 'accessLog#view' as PermissionKeys,
+				},
 			],
 		},
 		{
@@ -71,11 +76,6 @@ const dummy = {
 					title: 'Users',
 					url: '/users/',
           permissionKey: 'user#view' as PermissionKeys,
-				},
-				{
-					title: 'Access Logs',
-					url: '#',
-          permissionKey: 'accessLog#view' as PermissionKeys,
 				},
 			],
 		},
@@ -102,7 +102,7 @@ const dummy = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { email, username, userId } = useAuth();
 
-	const filtersBuilder = new FiltersBuilder();
+	const filtersBuilder = new FiltersBuilder({ behaviour: 'and' });
 	const filters = filtersBuilder.eq('user_id', userId!).build();
 
 	const { status, data } = useQuery({

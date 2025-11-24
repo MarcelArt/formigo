@@ -90,7 +90,7 @@ function RouteComponent() {
 		},
 	];
 
-	const filtersBuilder = new FiltersBuilder();
+	const filtersBuilder = new FiltersBuilder({ behaviour: 'and'});
 	if (usernameFilter) filtersBuilder.like('username', usernameFilter);
 	if (emailFilter) filtersBuilder.like('email', emailFilter);
 	const filters = filtersBuilder.build();

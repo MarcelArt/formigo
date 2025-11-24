@@ -86,6 +86,7 @@ export function DataTable<TData, TValue>({
 				total={total}
 				total_pages={total_pages}
 				visible={visible}
+				table={table}
 			/>
 		</div>
 	);

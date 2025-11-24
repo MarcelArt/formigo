@@ -23,7 +23,7 @@ export function RoleMappingTab({ userId, currentRoleIds }: RoleMappingTabProps) 
   const { organizationId } = useOrganization();
   const queryClient = useQueryClient();
 
-  const filters = new FiltersBuilder().like('value', search).build();
+  const filters = new FiltersBuilder({ behaviour: 'and' }).like('value', search).build();
   const params: PaginationParams = {
     filters,
     page: 0,

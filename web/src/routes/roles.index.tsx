@@ -93,7 +93,7 @@ function RouteComponent() {
 		},
 	];
 
-	const filtersBuilder = new FiltersBuilder();
+	const filtersBuilder = new FiltersBuilder({ behaviour: 'and' });
 	if (roleFilter.length > 0) {
 		filtersBuilder.like('value', roleFilter);
 	}

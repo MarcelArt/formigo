@@ -30,7 +30,7 @@ function RouteComponent() {
 	const [size, setSize] = useState(10);
 	const { isAuthorized } = usePermission();
 
-	const filtersBuilder = new FiltersBuilder();
+	const filtersBuilder = new FiltersBuilder({ behaviour: 'and' });
 	const filters = filtersBuilder.eq('organization_id', organizationId).build();
 
 	const param = { filters, page, size };

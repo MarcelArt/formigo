@@ -29,7 +29,7 @@ function RouteComponent() {
 	const { organizationId } = useOrganization();
 	const { isAuthorized } = usePermission();
 
-	const filtersBuilder = new FiltersBuilder().eq('id', id);
+	const filtersBuilder = new FiltersBuilder({ behaviour: 'and' }).eq('id', id);
 	const filters = filtersBuilder.build();
 
 	const params = { filters, page: 0, size: 1 };

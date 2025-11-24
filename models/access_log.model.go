@@ -35,6 +35,7 @@ type AccessLogPage struct {
 	UserID         uint           `json:"userId"`
 	OrganizationID uint           `json:"organizationId"`
 	Username       string         `json:"username"`
+	Permission     string         `json:"permission"`
 	IsAuthorized   bool           `json:"isAuthorized"`
 	Message        string         `json:"message"`
 	CreatedAt      string         `json:"createdAt"`

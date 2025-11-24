@@ -38,44 +38,57 @@ export interface IFiltersBuilder {
     build(): Filters[];
 }
 
+interface FiltersBuilderConfig {
+    behaviour?: 'and' | 'or'
+}
+
 export class FiltersBuilder implements IFiltersBuilder{
     private filters: Filters[];
+    private behaviour?: 'and' | 'or';
 
-    constructor() {
+    constructor({ behaviour }: FiltersBuilderConfig) {
         this.filters = [];
+        this.behaviour = behaviour;
     }
 
     public eq(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '=', value]);
         return this;
     }
 
     public ne(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '<>', value]);
         return this;
     }
 
     public gt(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '>', value]);
         return this;
     }
 
     public lt(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '<', value]);
         return this;
     }
 
     public gte(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '>=', value]);
         return this;
     }
 
     public lte(key: string, value: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, '<=', value]);
         return this;
     }
 
     public between(key: string, min: string | number, max: string | number): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'between', [min, max]]);
         return this;
     }
@@ -91,26 +104,31 @@ export class FiltersBuilder implements IFiltersBuilder{
     }
 
     public in(key: string, range: Array<string | number>): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'in', range]);
         return this;
     }
 
     public nin(key: string, range: Array<string | number>): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'not in', range]);
         return this;
     }
 
     public isNotNull(key: string): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'is not', 'null']);
         return this;
     }
 
     public isNull(key: string): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'is', 'null']);
         return this;
     }
 
     public like(key: string, value: string): this {
+        if (this.filters.length && this.behaviour === 'and') this.and();
         this.filters.push([key, 'LIKE', value]);
         return this;
     }

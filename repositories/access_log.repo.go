@@ -11,6 +11,7 @@ const accessLogPageQuery = `
 		al.user_id user_id,
 		al.organization_id organization_id,
 		u.username username,
+		al."permission" permission,
 		al.is_authorized is_authorized,
 		al.message message,
 		al.created_at created_at,

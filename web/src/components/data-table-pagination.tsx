@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import type { Table } from '@tanstack/react-table';
 
-interface DataTablePaginationProps {
+interface DataTablePaginationProps<TData> {
 	page: number;
 	size: number;
 	max_page: number;
@@ -13,20 +14,10 @@ interface DataTablePaginationProps {
 	visible: number;
 	setSize: (size: number) => void;
 	setPage: (page: number) => void;
+	table: Table<TData>;
 }
 
-export function DataTablePagination({
-	page,
-	size,
-	max_page,
-	total_pages,
-	total,
-	last,
-	first,
-	visible,
-	setSize,
-	setPage,
-}: DataTablePaginationProps) {
+export function DataTablePagination<TData>({ page, size, max_page, total_pages, total, last, first, visible, setSize, setPage, table }: DataTablePaginationProps<TData>) {
 	return (
 		<div className="flex items-center justify-between px-2 py-4">
 			<div className="text-muted-foreground flex-1 text-sm">
@@ -34,8 +25,14 @@ export function DataTablePagination({
 			</div>
 			<div className="flex items-center space-x-6 lg:space-x-8">
 				<div className="flex items-center space-x-2">
-					<p className="text-sm font-medium">Rows per page</p>
-					<Select value={`${size}`} onValueChange={(value) => setSize(+value)}>
+					{/* <p className="text-sm font-medium">Rows per page</p>
+					<Select
+						value={`${size}`}
+						onValueChange={(value) => {
+							setSize(+value);
+							// table.setPageSize(+value);
+						}}
+					>
 						<SelectTrigger className="h-8 w-[70px]">
 							<SelectValue placeholder={size} />
 						</SelectTrigger>
@@ -46,7 +43,7 @@ export function DataTablePagination({
 								</SelectItem>
 							))}
 						</SelectContent>
-					</Select>
+					</Select> */}
 				</div>
 				<div className="flex w-[100px] items-center justify-center text-sm font-medium">
 					Page {page + 1} of {total_pages}
@@ -64,13 +61,7 @@ export function DataTablePagination({
 						<span className="sr-only">Go to next page</span>
 						<ChevronRight />
 					</Button>
-					<Button
-						variant="outline"
-						size="icon"
-						className="hidden size-8 lg:flex"
-						onClick={() => setPage(max_page)}
-						disabled={last}
-					>
+					<Button variant="outline" size="icon" className="hidden size-8 lg:flex" onClick={() => setPage(max_page)} disabled={last}>
 						<span className="sr-only">Go to last page</span>
 						<ChevronsRight />
 					</Button>

@@ -31,7 +31,7 @@ function RouteComponent() {
 	const { id } = Route.useParams();
 	const { isAuthorized } = usePermission();
 
-	const filters = new FiltersBuilder().eq('role_id', id).build();
+	const filters = new FiltersBuilder({ behaviour: 'and' }).eq('role_id', id).build();
 
 	const params = {
 		filters,

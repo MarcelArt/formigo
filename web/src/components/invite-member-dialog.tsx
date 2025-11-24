@@ -21,7 +21,7 @@ export function InviteMemberDialog() {
 
 	const queryClient = useQueryClient();
 
-	const filters = search ? new FiltersBuilder().like('username', search).or().like('email', search).build() : [];
+	const filters = search ? new FiltersBuilder({ behaviour: 'and' }).like('username', search).or().like('email', search).build() : [];
 
 	const { data, status } = useQuery({
 		queryKey: ['users-combobox', search],
