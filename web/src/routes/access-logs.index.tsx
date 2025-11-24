@@ -1,5 +1,6 @@
 import accessLogApi from '@/api/access-log.api';
 import { DataTable } from '@/components/data-table';
+import { TableHeaderFilterDropdown } from '@/components/table-header-filter-dropdown';
 import { TableHeaderSearch } from '@/components/table-header-search';
 import { Badge } from '@/components/ui/badge';
 import { UnauthorizedComponent } from '@/components/unauthorized-component';
@@ -29,16 +30,18 @@ function RouteComponent() {
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
 	const [usernameFilter, setUsernameFilter] = useState('');
+	const [permissionFilter, setPermissionFilter] = useState('');
 	const { isAuthorized } = usePermission();
 
-	const filterBuilder = new FiltersBuilder({ behaviour: 'and'});
+	const filterBuilder = new FiltersBuilder({ behaviour: 'and' });
 	if (usernameFilter) filterBuilder.like('username', usernameFilter);
+	if (permissionFilter) filterBuilder.like('permission', permissionFilter);
 
 	const params: PaginationParams = {
 		filters: filterBuilder.build(),
 		page,
 		size,
-    sort: '-created_at'
+		sort: '-created_at',
 	};
 
 	const { data, status } = useQuery({
@@ -47,10 +50,10 @@ function RouteComponent() {
 	});
 
 	const columns: ColumnDef<AccessLogPage>[] = [
-    {
-      accessorKey: 'ID',
-      header: 'ID',
-    },
+		{
+			accessorKey: 'ID',
+			header: 'ID',
+		},
 		{
 			accessorKey: 'username',
 			header: () => <TableHeaderSearch button="Username" label="Search username" value={usernameFilter} onChange={setUsernameFilter} />,
@@ -76,14 +79,20 @@ function RouteComponent() {
 				);
 			},
 		},
-    {
-      accessorKey: 'permission',
-      header: 'Action',
-      cell: ({ row }) => {
-        const { permission } = row.original;
-        return <Badge variant='secondary'>{PERMISSION_MAP[permission as PermissionKeys]}</Badge>
-      }
-    },
+		{
+			accessorKey: 'permission',
+			header: () => {
+				const options = Object.entries(PERMISSION_MAP).map(([value, label]) => ({
+					value,
+					label,
+				}));
+				return <TableHeaderFilterDropdown display={(value) => PERMISSION_MAP[value as PermissionKeys]} options={options} button="Action" label="Filter action" value={permissionFilter} onChange={setPermissionFilter} />;
+			},
+			cell: ({ row }) => {
+				const { permission } = row.original;
+				return <Badge variant="secondary">{PERMISSION_MAP[permission as PermissionKeys]}</Badge>;
+			},
+		},
 		{
 			accessorKey: 'isAuthorized',
 			header: 'Status',
@@ -110,10 +119,10 @@ function RouteComponent() {
 		{
 			accessorKey: 'createdAt',
 			header: 'Date',
-      cell: ({ row }) => {
-        const { createdAt } = row.original;
-        return new Date(createdAt).toLocaleString('en-GB');
-      }
+			cell: ({ row }) => {
+				const { createdAt } = row.original;
+				return new Date(createdAt).toLocaleString('en-GB');
+			},
 		},
 	];
 
