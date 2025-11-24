@@ -65,6 +65,7 @@ func SetupRoutes(app *fiber.App) {
 	api_routes.SetupRoleRoutes(api, authMiddleware)
 	api_routes.SetupUserRoleRoutes(api, authMiddleware)
 	api_routes.SetupRolePermissionRoutes(api, authMiddleware)
+	api_routes.SetupAccessLogRoutes(api, authMiddleware)
 	api_routes.SetupFormTemplateRoutes(api, authMiddleware)
 
 	app.Static("/assets", "./web/dist/assets")
