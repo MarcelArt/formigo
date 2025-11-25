@@ -60,6 +60,7 @@ func (h *OrganizationHandler) Create(c *fiber.Ctx) error {
 	userOrg := models.UserOrganizationDTO{
 		OrganizationID: id,
 		UserID:         utils.ClaimsNumberToUint(userId),
+		Status:         "active",
 	}
 	if _, err := uoRepo.Create(userOrg); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.NewJSONResponse(err, ""))

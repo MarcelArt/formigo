@@ -1,0 +1,26 @@
+services:
+  formigo-postgres:
+    image: postgres:17
+    container_name: formigo-postgres
+    restart: no
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5433:5432
+    volumes:
+      - formigo-db:/var/lib/postgresql/data
+  formigo:
+    image: marcelaritonang/formigo:latest
+    container_name: formigo
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    restart: no
+    depends_on:
+      - formigo-postgres
+
+volumes:
+  formigo-db:
