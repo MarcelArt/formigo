@@ -27,6 +27,15 @@ api.interceptors.response.use(
 	async (error) => {
 		const { setUser, logout } = useAuth.getState();
 		const originalRequest = error.config;
+		console.log(1, originalRequest._retry);
+
+		if (originalRequest?.url === '/user/refresh') {
+			logout();
+			localStorage.removeItem('refreshToken');
+			window.location.href = '/login';
+			return Promise.reject(error);
+		}
+
 
 		if (error.response?.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;

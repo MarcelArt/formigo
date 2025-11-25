@@ -2,7 +2,6 @@
 package config
 
 import (
-	"log"
 	"os"
 	"strconv"
 
@@ -25,10 +24,10 @@ type env struct {
 var Env *env
 
 func SetupENV() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Panic(err.Error())
-	}
+	godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Panic(err.Error())
+	// }
 
 	jwtAccessTokenExpiryMinutes, err := strconv.Atoi(os.Getenv("JWT_ACCESS_TOKEN_EXPIRY_MINUTES"))
 	if err != nil {
