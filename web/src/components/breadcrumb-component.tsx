@@ -11,7 +11,7 @@ export function BreadcrumbComponent() {
 	const breadcrumbs = matchesWithCrumbs[matchesWithCrumbs.length - 1]?.loaderData?.crumbs ?? [{ title: 'Formigo', link: '#' }];
 
 	return (
-		<Breadcrumb>
+		<Breadcrumb className='w-full'>
 			<BreadcrumbList>
 				{breadcrumbs.map((breadcrumb, i) => {
 					if (i === 0 || i === breadcrumbs.length - 1) {

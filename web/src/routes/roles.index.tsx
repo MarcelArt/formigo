@@ -57,15 +57,15 @@ function RouteComponent() {
 				return permissionsSplitted?.length ? (
 					permissionsSplitted.map((permission, i) =>
 						i < 9 ? (
-							<Badge className={cn('mr-1', { 'text-accent-foreground bg-rose-pine-gold': permission === 'fullAccess' })} key={i}>
+							<Badge variant={permission === 'fullAccess' ? 'default' : 'secondary'} className='mr-1' key={i}>
 								{PERMISSION_MAP[permission]}
 							</Badge>
 						) : i === 9 ? (
-							<Badge key={i}>+{permissionsSplitted.length - 9}</Badge>
+							<Badge variant='secondary' key={i}>+{permissionsSplitted.length - 9}</Badge>
 						) : null,
 					)
 				) : (
-					<Badge>None</Badge>
+					<Badge variant='outline'>None</Badge>
 				);
 			},
 		},
