@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { AudioWaveform, Building2, Command, Frame, GalleryVerticalEnd, Map, PieChart, UserLock } from 'lucide-react';
+import { AudioWaveform, Building2, Command, FormInputIcon, Frame, GalleryVerticalEnd, Map, PieChart, UserLock } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -80,23 +80,52 @@ const dummy = {
 			],
 		},
 	],
-	projects: [
+	forms: [
 		{
-			name: 'Design Engineering',
+			title: 'Form Builder',
 			url: '#',
-			icon: Frame,
-		},
-		{
-			name: 'Sales & Marketing',
-			url: '#',
-			icon: PieChart,
-		},
-		{
-			name: 'Travel',
-			url: '#',
-			icon: Map,
+			icon: FormInputIcon,
+			items: [
+				{
+					title: 'Templates',
+					url: '/form-templates/',
+          permissionKey: 'formTemplate#view' as PermissionKeys,
+				},
+				{
+					title: 'Events',
+					url: '/form-events/',
+          permissionKey: 'formEvent#view' as PermissionKeys,
+				},
+				{
+					title: 'Documents',
+					url: '/form-documents/',
+          permissionKey: 'formDocs#view' as PermissionKeys,
+				},
+				{
+					title: 'Entries',
+					url: '/entries/',
+          permissionKey: 'entries#view' as PermissionKeys,
+				},
+			],
 		},
 	],
+	// forms: [
+	// 	{
+	// 		name: 'Design Engineering',
+	// 		url: '#',
+	// 		icon: Frame,
+	// 	},
+	// 	{
+	// 		name: 'Sales & Marketing',
+	// 		url: '#',
+	// 		icon: PieChart,
+	// 	},
+	// 	{
+	// 		name: 'Travel',
+	// 		url: '#',
+	// 		icon: Map,
+	// 	},
+	// ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -130,8 +159,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarContent>
 				<PermissionProvider>
 					<NavMain title="Organization Management" items={dummy.navMain} />
+					<NavMain title="Forms Management" items={dummy.forms} />
+					{/* <NavProjects projects={dummy.projects} /> */}
 				</PermissionProvider>
-				{/* <NavProjects projects={dummy.projects} /> */}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={{ email: email ?? '', name: username ?? '', avatar: 'logo192.png' }} />
