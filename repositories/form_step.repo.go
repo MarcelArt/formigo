@@ -10,6 +10,7 @@ const formStepPageQuery = `
 		*
 	from form_steps t 
 	where t.organization_id = ? 
+	and t.deleted_at isnull
 `
 
 type IFormStepRepo interface {

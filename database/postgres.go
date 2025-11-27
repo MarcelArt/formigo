@@ -49,6 +49,7 @@ func MigrateDB() error {
 		models.AccessLog{},
 		models.FormTemplate{},
 		models.FormStep{},
+		models.FormQuestion{},
 	)
 	fmt.Println("Database Migrated")
 
@@ -66,6 +67,7 @@ func DropDB() error {
 		models.AccessLog{},
 		models.FormTemplate{},
 		models.FormStep{},
+		models.FormQuestion{},
 	)
 	fmt.Println("Database Droped")
 
