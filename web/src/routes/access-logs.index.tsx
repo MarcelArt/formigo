@@ -158,7 +158,7 @@ function RouteComponent() {
 	return (
 		<div className="container mx-auto py-10">
 			<div className="flex flex-row justify-between">
-				<h1 className="text-2xl pb-4">Users</h1>
+				<h1 className="text-2xl pb-4">Access Logs</h1>
 				<div className="flex flex-row gap-2">
 					{/* <PermissionProvider permissionKey="accessLog#view">
               <CreateUserDialog />
