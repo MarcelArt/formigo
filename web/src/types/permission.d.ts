@@ -7,7 +7,9 @@ export type PermissionKeys = 'fullAccess' |
     'organization#manage' |
     'userOrganization#invite' |
     'accessLog#view' |
-    'accessLog#manage';
+    'accessLog#manage' |
+    'formTemplate#view' |
+    'formTemplate#manage';
 
 export const FULL_ACCESS: PermissionKeys = 'fullAccess';
 
@@ -22,4 +24,6 @@ export const PERMISSION_MAP: Record<PermissionKeys, string> = {
     'userOrganization#invite': 'Invite User to Organization',
     'accessLog#view': 'View Access Logs',
     'accessLog#manage': 'Manage Access Logs',
+    'formTemplate#view': 'View Form Templates',
+    'formTemplate#manage': 'Manage Form Templates',
 }

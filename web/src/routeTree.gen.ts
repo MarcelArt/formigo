@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as RolesIndexRouteImport } from './routes/roles.index'
+import { Route as FormTemplatesIndexRouteImport } from './routes/form-templates.index'
 import { Route as AccessLogsIndexRouteImport } from './routes/access-logs.index'
 import { Route as OrganizationSettingRouteImport } from './routes/organization.setting'
 import { Route as OrganizationMembersRouteImport } from './routes/organization.members'
@@ -44,6 +45,11 @@ const UsersIndexRoute = UsersIndexRouteImport.update({
 const RolesIndexRoute = RolesIndexRouteImport.update({
   id: '/roles/',
   path: '/roles/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormTemplatesIndexRoute = FormTemplatesIndexRouteImport.update({
+  id: '/form-templates/',
+  path: '/form-templates/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccessLogsIndexRoute = AccessLogsIndexRouteImport.update({
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/access-logs': typeof AccessLogsIndexRoute
+  '/form-templates': typeof FormTemplatesIndexRoute
   '/roles': typeof RolesIndexRoute
   '/users': typeof UsersIndexRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/access-logs': typeof AccessLogsIndexRoute
+  '/form-templates': typeof FormTemplatesIndexRoute
   '/roles': typeof RolesIndexRoute
   '/users': typeof UsersIndexRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
   '/access-logs/': typeof AccessLogsIndexRoute
+  '/form-templates/': typeof FormTemplatesIndexRoute
   '/roles/': typeof RolesIndexRoute
   '/users/': typeof UsersIndexRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/access-logs'
+    | '/form-templates'
     | '/roles'
     | '/users'
     | '/roles/update/$id'
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/access-logs'
+    | '/form-templates'
     | '/roles'
     | '/users'
     | '/roles/update/$id'
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/organization/members'
     | '/organization/setting'
     | '/access-logs/'
+    | '/form-templates/'
     | '/roles/'
     | '/users/'
     | '/roles/update/$id'
@@ -167,6 +179,7 @@ export interface RootRouteChildren {
   OrganizationMembersRoute: typeof OrganizationMembersRoute
   OrganizationSettingRoute: typeof OrganizationSettingRoute
   AccessLogsIndexRoute: typeof AccessLogsIndexRoute
+  FormTemplatesIndexRoute: typeof FormTemplatesIndexRoute
   RolesIndexRoute: typeof RolesIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
   RolesUpdateIdRoute: typeof RolesUpdateIdRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/roles'
       fullPath: '/roles'
       preLoaderRoute: typeof RolesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/form-templates/': {
+      id: '/form-templates/'
+      path: '/form-templates'
+      fullPath: '/form-templates'
+      preLoaderRoute: typeof FormTemplatesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/access-logs/': {
@@ -263,6 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrganizationMembersRoute: OrganizationMembersRoute,
   OrganizationSettingRoute: OrganizationSettingRoute,
   AccessLogsIndexRoute: AccessLogsIndexRoute,
+  FormTemplatesIndexRoute: FormTemplatesIndexRoute,
   RolesIndexRoute: RolesIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
   RolesUpdateIdRoute: RolesUpdateIdRoute,
