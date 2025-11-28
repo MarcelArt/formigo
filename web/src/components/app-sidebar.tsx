@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { AudioWaveform, Building2, Command, FormInputIcon, Frame, GalleryVerticalEnd, Map, PieChart, UserLock } from 'lucide-react';
+import { AudioWaveform, Building2, Command, FormInputIcon, GalleryVerticalEnd, UserLock } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
