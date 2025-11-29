@@ -22,6 +22,7 @@ import { Route as OrganizationCreateRouteImport } from './routes/organization.cr
 import { Route as FormTemplatesCreateRouteImport } from './routes/form-templates.create'
 import { Route as UsersUpdateIdRouteImport } from './routes/users.update.$id'
 import { Route as RolesUpdateIdRouteImport } from './routes/roles.update.$id'
+import { Route as FormTemplatesUpdateIdRouteImport } from './routes/form-templates.update.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -88,6 +89,11 @@ const RolesUpdateIdRoute = RolesUpdateIdRouteImport.update({
   path: '/roles/update/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FormTemplatesUpdateIdRoute = FormTemplatesUpdateIdRouteImport.update({
+  id: '/form-templates/update/$id',
+  path: '/form-templates/update/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/form-templates': typeof FormTemplatesIndexRoute
   '/roles': typeof RolesIndexRoute
   '/users': typeof UsersIndexRoute
+  '/form-templates/update/$id': typeof FormTemplatesUpdateIdRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
   '/users/update/$id': typeof UsersUpdateIdRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/form-templates': typeof FormTemplatesIndexRoute
   '/roles': typeof RolesIndexRoute
   '/users': typeof UsersIndexRoute
+  '/form-templates/update/$id': typeof FormTemplatesUpdateIdRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
   '/users/update/$id': typeof UsersUpdateIdRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/form-templates/': typeof FormTemplatesIndexRoute
   '/roles/': typeof RolesIndexRoute
   '/users/': typeof UsersIndexRoute
+  '/form-templates/update/$id': typeof FormTemplatesUpdateIdRoute
   '/roles/update/$id': typeof RolesUpdateIdRoute
   '/users/update/$id': typeof UsersUpdateIdRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/form-templates'
     | '/roles'
     | '/users'
+    | '/form-templates/update/$id'
     | '/roles/update/$id'
     | '/users/update/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/form-templates'
     | '/roles'
     | '/users'
+    | '/form-templates/update/$id'
     | '/roles/update/$id'
     | '/users/update/$id'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/form-templates/'
     | '/roles/'
     | '/users/'
+    | '/form-templates/update/$id'
     | '/roles/update/$id'
     | '/users/update/$id'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   FormTemplatesIndexRoute: typeof FormTemplatesIndexRoute
   RolesIndexRoute: typeof RolesIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
+  FormTemplatesUpdateIdRoute: typeof FormTemplatesUpdateIdRoute
   RolesUpdateIdRoute: typeof RolesUpdateIdRoute
   UsersUpdateIdRoute: typeof UsersUpdateIdRoute
 }
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RolesUpdateIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/form-templates/update/$id': {
+      id: '/form-templates/update/$id'
+      path: '/form-templates/update/$id'
+      fullPath: '/form-templates/update/$id'
+      preLoaderRoute: typeof FormTemplatesUpdateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   FormTemplatesIndexRoute: FormTemplatesIndexRoute,
   RolesIndexRoute: RolesIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
+  FormTemplatesUpdateIdRoute: FormTemplatesUpdateIdRoute,
   RolesUpdateIdRoute: RolesUpdateIdRoute,
   UsersUpdateIdRoute: UsersUpdateIdRoute,
 }

@@ -8,56 +8,66 @@ import useOrganization from '@/hooks/useOrganization';
 import { unwrapAxiosError } from '@/lib/api-error';
 import { FormTemplateDtoSchema, type FormTemplateDto } from '@/types/form-template.d';
 import { useForm } from '@tanstack/react-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 import { FilePlus } from 'lucide-react';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/form-templates/create')({
-  component: RouteComponent,
-  loader: () => ({
-		crumbs: [
-			{ title: 'Form Builder', link: '#' },
-			{ title: 'Templates', link: '/form-templates' },
-			{ title: 'Create new template', link: '#' },
-		],
-	}),
-})
+export const Route = createFileRoute('/form-templates/update/$id')({
+	component: RouteComponent,
+	loader: async ({ params }) => {
+		const { id } = params;
+		const { organizationId } = useOrganization.getState();
+
+		const role = await formTemplateApi.getById(+id, organizationId);
+		return {
+			crumbs: [
+				{ title: 'Form Builder', link: '#' },
+				{ title: 'Templates', link: '/form-templates' },
+				{ title: role.items.title, link: '#' },
+			],
+		};
+	},
+});
 
 function RouteComponent() {
   const { organizationId } = useOrganization();
   const { userId } = useAuth();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const { id } = Route.useParams();
 
   const { mutate } = useMutation({
-    mutationFn: (input: FormTemplateDto) => formTemplateApi.create(organizationId, input),
-    onSuccess: (data) => {
+    mutationFn: (input: FormTemplateDto) => formTemplateApi.update(+id, organizationId, input),
+    onSuccess: () => {
       toast.success('Form template created successfully');
       queryClient.invalidateQueries({
         queryKey: ['form-templates', organizationId],
       });
-      navigate({ to: '/form-templates/update/$id', params: { id: data.items.ID.toString() } });
     },
     onError: (e) => {
       toast.error(`Failed creating form template: ${unwrapAxiosError(e)}`);
     },
   });
 
-  const form = useForm({
-      validators: {
-        onSubmit: FormTemplateDtoSchema,
-      },
-      defaultValues: {
-        title: '',
-        description: '',
-        organizationId,
-        userId: userId!,
-      },
-      onSubmit: ({ value }) => mutate(value),
-    });
+  const { data, status } = useQuery({
+    queryKey: ['form-template', id],
+    queryFn: () => formTemplateApi.getById(+id, organizationId),
+  });
 
-  return (
+	const form = useForm({
+		validators: {
+			onSubmit: FormTemplateDtoSchema,
+		},
+		defaultValues: {
+			title: status === 'success' ? data.items.title : '',
+			description: status === 'success' ? data.items.description : '',
+			organizationId,
+			userId: userId!,
+		},
+		onSubmit: ({ value }) => mutate(value),
+	});
+
+	return (
 		<div className="flex min-h-svh flex-col items-center gap-6 p-6 md:p-10">
 			<div className="flex flex-col gap-6 w-full max-w-7xl">
 				<form
@@ -73,7 +83,7 @@ function RouteComponent() {
 									<FilePlus className="size-6" />
 								</div>
 							</a>
-							<h1 className="text-xl font-bold">Create new form template</h1>
+							<h1 className="text-xl font-bold">Update form {status === 'success' ? data.items.title : ''}</h1>
 						</div>
 						<form.Field
 							name="title"
@@ -113,7 +123,7 @@ function RouteComponent() {
 											placeholder="Description"
 											required
 										/>
-                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+										{isInvalid && <FieldError errors={field.state.meta.errors} />}
 									</Field>
 								);
 							}}

@@ -68,7 +68,7 @@ function RouteComponent() {
 			cell: ({ row }) => {
 				const { UpdatedAt } = row.original;
 				return standardDateTime(UpdatedAt);
-			}
+			},
 		},
 		{
 			header: 'Actions',
@@ -79,11 +79,11 @@ function RouteComponent() {
 					<PermissionProvider permissionKey="formTemplate#manage" deniedDisplay={<ShieldBan />}>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								{/* <Link to="/users/update/$id" params={{ id: row.original.ID.toString() }}> */}
-								<Button variant="ghost" size="icon">
-									<Pencil />
-								</Button>
-								{/* </Link> */}
+								<Link to="/form-templates/update/$id" params={{ id: row.original.ID.toString() }}>
+									<Button variant="ghost" size="icon">
+										<Pencil />
+									</Button>
+								</Link>
 							</TooltipTrigger>
 							<TooltipContent>
 								<p>Edit</p>

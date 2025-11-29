@@ -1,5 +1,13 @@
 import z from "zod";
 
+export interface FormTemplate {
+    ID: number;
+    title: string;
+    description: string;
+    organizationId: number;
+    userId: number;
+}
+
 export interface FormTemplatePage {
     ID: number;
     title: string;
