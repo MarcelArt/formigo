@@ -3,7 +3,6 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import useOrganization from "@/hooks/useOrganization";
-import useAuth from "@/hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { unwrapAxiosError } from "@/lib/api-error";
