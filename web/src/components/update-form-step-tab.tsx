@@ -1,23 +1,28 @@
-import { FilePlus } from "lucide-react";
-import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import useOrganization from "@/hooks/useOrganization";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { unwrapAxiosError } from "@/lib/api-error";
-import { useForm } from "@tanstack/react-form";
-import { FormStepDtoSchema, type FormStepDto } from "@/types/form-step.d";
-import formStepApi from "@/api/form-step.api";
+import { Field, FieldError, FieldGroup, FieldLabel } from './ui/field';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import useOrganization from '@/hooks/useOrganization';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { unwrapAxiosError } from '@/lib/api-error';
+import { useForm } from '@tanstack/react-form';
+import { FormStepDtoSchema, type FormStepDto } from '@/types/form-step.d';
+import formStepApi from '@/api/form-step.api';
+import { Separator } from './ui/separator';
+import { FormQuestionBuilderCard } from './form-question-builder-card';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import type { UpsertFormQuestion } from '@/types/form-question';
 
 interface UpdateFormStepTabProps {
-  id: number;
-  templateId: number;
+	id: number;
+	templateId: number;
 }
 
 export function UpdateFormStepTab({ id, templateId }: UpdateFormStepTabProps) {
-  const { organizationId } = useOrganization();
+	const { organizationId } = useOrganization();
 	const queryClient = useQueryClient();
+	const [questions, setQuestions] = useState<UpsertFormQuestion[]>([]);
 
 	const { mutate } = useMutation({
 		mutationFn: (input: FormStepDto) => formStepApi.update(id, organizationId, input),
@@ -40,21 +45,48 @@ export function UpdateFormStepTab({ id, templateId }: UpdateFormStepTabProps) {
 		queryFn: () => formStepApi.getById(id, organizationId),
 	});
 
-  const form = useForm({
-      validators: {
-        onSubmit: FormStepDtoSchema,
-      },
-      defaultValues: {
-        title: status === 'success' ? data.items.title : '',
-        index: status === 'success' ? data.items.index : 0,
-        organizationId,
-        templateId,
-      },
-      onSubmit: ({ value }) => mutate(value),
-    });
+	const form = useForm({
+		validators: {
+			onSubmit: FormStepDtoSchema,
+		},
+		defaultValues: {
+			title: status === 'success' ? data.items.title : '',
+			index: status === 'success' ? data.items.index : 0,
+			organizationId,
+			templateId,
+		},
+		onSubmit: ({ value }) => mutate(value),
+	});
 
-  return (
-		<div className="flex flex-col gap-6 w-full">
+	const updateQuestion = (index: number, value: UpsertFormQuestion) => {
+		setQuestions((prev) => prev.map((question, i) => (i === index ? value : question)));
+	};
+
+	const pushQuestion = () => {
+		const newQuestions: UpsertFormQuestion[] = [
+			...questions,
+			{
+				ID: 0,
+				index: questions.length,
+				isRequired: false,
+				key: '',
+				label: '',
+				options: [],
+				organizationId,
+				stepId: id,
+				type: '',
+			},
+		];
+		setQuestions(newQuestions);
+	};
+
+	const deleteQuestions = (index: number) => {
+		questions.splice(index, 1);
+		setQuestions([...questions]);
+	};
+
+	return (
+		<div className="flex flex-col gap-6 w-full my-4">
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -62,12 +94,7 @@ export function UpdateFormStepTab({ id, templateId }: UpdateFormStepTabProps) {
 				}}
 			>
 				<FieldGroup>
-					<div className="flex flex-col items-center gap-2 text-center">
-						<a href="#" className="flex flex-col items-center gap-2 font-medium">
-							<div className="flex size-8 items-center justify-center rounded-md">
-								<FilePlus className="size-6" />
-							</div>
-						</a>
+					<div className="flex flex-col gap-2">
 						<h1 className="text-xl font-bold">Update step {status === 'success' ? `${data.items.index + 1} - ${data.items.title}` : ''}</h1>
 					</div>
 					<form.Field
@@ -100,6 +127,23 @@ export function UpdateFormStepTab({ id, templateId }: UpdateFormStepTabProps) {
 					</div>
 				</FieldGroup>
 			</form>
+			<Separator className="w-full bg-sidebar-border" orientation="horizontal" />
+			<div className="grid grid-cols-2 gap-4">
+				<div className="flex flex-col gap-4">
+					<h2 className="text-lg font-semibold">Questions</h2>
+					{questions.map((question, i) => (
+						<FormQuestionBuilderCard key={i} value={question} onChange={(val) => updateQuestion(i, val)} onDelete={() => deleteQuestions(i)} />
+					))}
+
+					<Button onClick={pushQuestion}>
+						<Plus />
+						Add more question
+					</Button>
+				</div>
+				<div>
+					<h2 className="text-lg font-semibold">Preview</h2>
+				</div>
+			</div>
 		</div>
 	);
 }
