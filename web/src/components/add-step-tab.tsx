@@ -22,13 +22,13 @@ export function AddStepTab({ templateId, index }: AddStepTabProps) {
 	const { mutate } = useMutation({
 		mutationFn: (input: FormStepDto) => formStepApi.create(organizationId, input),
 		onSuccess: () => {
-			toast.success('Form template created successfully');
+			toast.success('Form step created successfully');
 			queryClient.invalidateQueries({
-				queryKey: ['form-templates', organizationId],
+				queryKey: ['form-steps', organizationId],
 			});
 		},
 		onError: (e) => {
-			toast.error(`Failed creating form template: ${unwrapAxiosError(e)}`);
+			toast.error(`Failed creating form step: ${unwrapAxiosError(e)}`);
 		},
 	});
 
