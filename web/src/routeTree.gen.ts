@@ -19,6 +19,7 @@ import { Route as AccessLogsIndexRouteImport } from './routes/access-logs.index'
 import { Route as OrganizationSettingRouteImport } from './routes/organization.setting'
 import { Route as OrganizationMembersRouteImport } from './routes/organization.members'
 import { Route as OrganizationCreateRouteImport } from './routes/organization.create'
+import { Route as FormTemplatesCreateRouteImport } from './routes/form-templates.create'
 import { Route as UsersUpdateIdRouteImport } from './routes/users.update.$id'
 import { Route as RolesUpdateIdRouteImport } from './routes/roles.update.$id'
 
@@ -72,6 +73,11 @@ const OrganizationCreateRoute = OrganizationCreateRouteImport.update({
   path: '/organization/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FormTemplatesCreateRoute = FormTemplatesCreateRouteImport.update({
+  id: '/form-templates/create',
+  path: '/form-templates/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersUpdateIdRoute = UsersUpdateIdRouteImport.update({
   id: '/users/update/$id',
   path: '/users/update/$id',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/form-templates/create': typeof FormTemplatesCreateRoute
   '/organization/create': typeof OrganizationCreateRoute
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/form-templates/create': typeof FormTemplatesCreateRoute
   '/organization/create': typeof OrganizationCreateRoute
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/form-templates/create': typeof FormTemplatesCreateRoute
   '/organization/create': typeof OrganizationCreateRoute
   '/organization/members': typeof OrganizationMembersRoute
   '/organization/setting': typeof OrganizationSettingRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/form-templates/create'
     | '/organization/create'
     | '/organization/members'
     | '/organization/setting'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/form-templates/create'
     | '/organization/create'
     | '/organization/members'
     | '/organization/setting'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/form-templates/create'
     | '/organization/create'
     | '/organization/members'
     | '/organization/setting'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
+  FormTemplatesCreateRoute: typeof FormTemplatesCreateRoute
   OrganizationCreateRoute: typeof OrganizationCreateRoute
   OrganizationMembersRoute: typeof OrganizationMembersRoute
   OrganizationSettingRoute: typeof OrganizationSettingRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/form-templates/create': {
+      id: '/form-templates/create'
+      path: '/form-templates/create'
+      fullPath: '/form-templates/create'
+      preLoaderRoute: typeof FormTemplatesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/update/$id': {
       id: '/users/update/$id'
       path: '/users/update/$id'
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
+  FormTemplatesCreateRoute: FormTemplatesCreateRoute,
   OrganizationCreateRoute: OrganizationCreateRoute,
   OrganizationMembersRoute: OrganizationMembersRoute,
   OrganizationSettingRoute: OrganizationSettingRoute,

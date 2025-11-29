@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { UnauthorizedComponent } from '@/components/unauthorized-component';
 import { usePermission } from '@/context/permission-context';
 import useOrganization from '@/hooks/useOrganization';
+import { standardDateTime } from '@/lib/utils';
 import type { AccessLogPage } from '@/types/access-log';
 import { FiltersBuilder, type PaginationParams } from '@/types/paged.d';
 import { PERMISSION_MAP, type PermissionKeys } from '@/types/permission.d';
@@ -147,7 +148,7 @@ function RouteComponent() {
 			header: 'Date',
 			cell: ({ row }) => {
 				const { createdAt } = row.original;
-				return new Date(createdAt).toLocaleString('en-GB');
+				return standardDateTime(createdAt);
 			},
 		},
 	];
